@@ -7,6 +7,7 @@ export const defaultTheme = {
     accent: 'white',
     background: '#050505',
     text: 'white',
+    inactive: '#4D4D4D',
   },
   fonts: {
     lightFont: 'Oxygen-Light',

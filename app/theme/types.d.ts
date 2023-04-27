@@ -5,6 +5,7 @@ declare global {
     interface ThemeColors {
       background: string;
       text: string;
+      inactive: string;
     }
 
     interface ThemeFonts {
