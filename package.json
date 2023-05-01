@@ -27,6 +27,8 @@
     "appcenter": "4.4.4",
     "axios": "^0.27.2",
     "i18next": "^21.8.5",
+    "lottie-ios": "3.4.0",
+    "lottie-react-native": "^5.1.5",
     "react": "18.1.0",
     "react-i18next": "^11.16.9",
     "react-native": "0.68.2",

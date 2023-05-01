@@ -1,7 +1,7 @@
 import { RootState } from 'app/store/slice';
 import { isTablet } from 'app/utils/extras';
 import React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import {
   heightPercentageToDP,
@@ -14,20 +14,15 @@ export const useStyle = () => {
   const theme = useTheme();
   const styles = () =>
     StyleSheet.create({
-      tabbarIcon: {
-        fontSize: widthPercentageToDP(20),
+      container: {
+        flex: 1,
+        backgroundColor: theme.colors.background,
       },
-      tabbar: {
+      subContainer: {},
+      imagecard: {
+        marginTop: heightPercentageToDP(2),
         backgroundColor: theme.colors.glossyBlack,
-        height:
-          Platform.OS == 'ios'
-            ? heightPercentageToDP(12)
-            : heightPercentageToDP(8),
-        paddingBottom: heightPercentageToDP(1),
-      },
-      tabbarLabel: {
-        fontFamily: theme.fonts.regularFont,
-        fontSize: widthPercentageToDP(3),
+        marginHorizontal: widthPercentageToDP(2),
       },
     });
   return React.useMemo(() => styles(), [isDark]);

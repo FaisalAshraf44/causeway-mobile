@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { RootState } from 'app/store/slice';
 import { useTheme } from 'react-native-paper';
 import React from 'react';
@@ -45,20 +45,70 @@ export const useStyle = () => {
       },
       search: {
         color: theme.colors.text,
-        paddingHorizontal: widthPercentageToDP(2),
         fontFamily: theme.fonts.regularFont,
+        left: widthPercentageToDP(10),
+        position: 'absolute',
+        top: Platform.OS == 'ios' ? heightPercentageToDP(1.33) : -1,
+        zIndex: 500,
+        width: widthPercentageToDP(80),
+      },
+      searchParent: {
+        borderRadius: widthPercentageToDP(2),
+        overflow: 'hidden',
+        marginTop: heightPercentageToDP(2),
+        alignSelf: 'center',
+        backgroundColor: 'transparent',
+        zIndex: -1,
+      },
+      imagecard: {
+        marginTop: heightPercentageToDP(2),
+        backgroundColor: theme.colors.glossyBlack,
+        marginHorizontal: widthPercentageToDP(2),
+      },
+      title: {
+        fontSize: isTablet() ? widthPercentageToDP(2) : widthPercentageToDP(5),
+        fontFamily: theme.fonts.boldFont,
+        color: theme.colors.text,
+      },
+      viewAll: {
+        fontSize: isTablet()
+          ? widthPercentageToDP(2)
+          : widthPercentageToDP(3.2),
+        fontFamily: theme.fonts.regularFont,
+        color: theme.colors.text,
+      },
+      empty: {
+        width: widthPercentageToDP(40),
+        height: heightPercentageToDP(30),
+        alignSelf: 'center',
+      },
+
+      sectionContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: heightPercentageToDP(2),
       },
       searchIcon: {
         width: widthPercentageToDP(5),
         height: heightPercentageToDP(2.5),
+        marginHorizontal: widthPercentageToDP(2),
+        position: 'absolute',
+        top:
+          Platform.OS == 'ios'
+            ? heightPercentageToDP(1.2)
+            : heightPercentageToDP(1.3),
       },
       searchView: {
-        marginTop: heightPercentageToDP(2),
-        paddingVertical: heightPercentageToDP(1.5),
         width: widthPercentageToDP(90),
         alignSelf: 'center',
-        opacity: 0.8,
+        opacity: 0.7,
         flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: widthPercentageToDP(2),
+        overflow: 'hidden',
+        height: heightPercentageToDP(5),
+        zIndex: -1,
       },
     });
   return React.useMemo(() => styles(), [isDark]);

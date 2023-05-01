@@ -14,12 +14,33 @@ const images = {
     profile: require('../assets/Bottombar/profile.png'),
     search: require('../assets/Bottombar/search.png'),
   },
+  global: {
+    noData: require('../assets/Global/noData.json'),
+  },
   drawer: {
     drawer: require('../assets/drawer/drawer.png'),
     notification: require('../assets/drawer/notification.png'),
   },
+  cardetails: {
+    back: require('../assets/CarDetail/back.png'),
+    white_heart: require('../assets/CarDetail/heart.png'),
+    calender: require('../assets/CarDetail/calander.png'),
+    pen: require('../assets/CarDetail/pen.png'),
+    location: require('../assets/CarDetail/location.png'),
+    seat: require('../assets/CarDetail/seat.png'),
+    petrol: require('../assets/CarDetail/petrol.png'),
+    cc: require('../assets/CarDetail/cc.png'),
+    bigsmall: require('../assets/CarDetail/bigsmall.png'),
+    auto: require('../assets/CarDetail/auto.png'),
+  },
   explore: {
     car: require('../assets/Explore/car.png'),
+    img_card_heart: require('../assets/Explore/img_card_heart.png'),
+    blackCar: require('../assets/Explore/blackCar.png'),
+    star: require('../assets/Explore/star.png'),
+    aux: require('../assets/Explore/auxCable.png'),
+    bluetooth: require('../assets/Explore/bluetooth.png'),
+    satelite: require('../assets/Explore/satelite.png'),
   },
 };
 

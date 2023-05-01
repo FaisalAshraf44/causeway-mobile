@@ -8,9 +8,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootState } from 'app/store/slice/';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StatusBar } from 'react-native';
-import { useTheme } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { I18nManager, Pressable, StatusBar } from 'react-native';
+import { Snackbar, useTheme } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
 import BottomTabNavigation from './BottomTabNavigation';
 import { navigationRef } from './NavigationService';
 import Onboard from 'app/screens/Onboard';
@@ -22,6 +22,13 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { disableSnackbar } from 'app/store/slice/snackbarSlice';
+import { useEffect } from 'react';
+import CarListing from 'app/screens/CarListing';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { isTablet } from 'react-native-device-info';
+import CarDetails from 'app/screens/CarDetail';
+import CarDetail from 'app/screens/CarDetail';
 const Stack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
 const AppDrawer = createDrawerNavigator();
@@ -78,6 +85,34 @@ const AppNavigator = () => {
     },
   };
 
+  const goBack = () => {
+    navigation.goBack();
+  };
+
+  const defaultOptions: any = {
+    headerBackTitle: '',
+    headerLeft: () => (
+      <Pressable
+        onPress={goBack}
+        style={{ paddingLeft: widthPercentageToDP(3) }}
+      >
+        <AntDesign
+          name={I18nManager.isRTL ? 'right' : 'left'}
+          color={'white'}
+          size={isTablet() ? widthPercentageToDP(4) : widthPercentageToDP(4.5)}
+        />
+      </Pressable>
+    ),
+    headerShown: true,
+    headerTitleAlign: 'left',
+    headerTitle: t(''),
+    headerTransparent: true,
+    headerTitleStyle: {
+      color: theme.colors.text,
+      fontFamily: theme.fonts.regularFont,
+    },
+  };
+
   return (
     <AppDrawer.Navigator drawerContent={() => <Drawer />}>
       <AppDrawer.Screen
@@ -85,16 +120,47 @@ const AppNavigator = () => {
         component={BottomTabNavigation}
         options={bottomTabOptions}
       />
+      <AppDrawer.Screen
+        name={'CarListing'}
+        component={CarListing}
+        options={defaultOptions}
+      />
+      <AppDrawer.Screen
+        name={'CarDetail'}
+        component={CarDetail}
+        options={defaultOptions}
+      />
     </AppDrawer.Navigator>
   );
 };
 const App: React.FC = () => {
+  const theme = useTheme();
   const firstRun = useSelector((state: RootState) => state.user.firstRun);
+  const message = useSelector(
+    (state: RootState) => state.snackbar.snackbarMessage
+  );
+  const isVisible = useSelector(
+    (state: RootState) => state.snackbar.snackbarVisible
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(disableSnackbar());
+    }, 3000);
+  }, [isVisible, dispatch]);
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <StatusBar backgroundColor={'red'} />
+      <StatusBar backgroundColor={'black'} />
       {!firstRun ? <AppNavigator /> : <OnboardNavigator />}
+      <Snackbar
+        visible={isVisible}
+        onDismiss={() => {}}
+        style={{ zIndex: 5000 }}
+      >
+        {message}
+      </Snackbar>
     </NavigationContainer>
   );
 };

@@ -6,6 +6,7 @@ declare global {
       background: string;
       text: string;
       inactive: string;
+      glossyBlack: string;
     }
 
     interface ThemeFonts {

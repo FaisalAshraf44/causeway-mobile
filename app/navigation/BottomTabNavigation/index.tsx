@@ -22,25 +22,7 @@ const BottomTabNavigation = () => {
     tabBarInactiveTintColor: theme.colors.inactive,
   };
   return (
-    <Tab.Navigator
-      screenOptions={screenOptions}
-      tabBar={(props) => {
-        return (
-          <BlurView
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-            }}
-            blurType="dark"
-            blurAmount={100}
-          >
-            <BottomTabBar {...props} />
-          </BlurView>
-        );
-      }}
-    >
+    <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen
         name="Explore"
         component={Explore}
