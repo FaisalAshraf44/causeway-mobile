@@ -5,30 +5,34 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import images from 'app/config/images';
+import CarDetail from 'app/screens/CarDetail';
+import CarListing from 'app/screens/CarListing';
+import Onboard from 'app/screens/Onboard';
+import Search from 'app/screens/Search';
 import { RootState } from 'app/store/slice/';
+import { disableSnackbar } from 'app/store/slice/snackbarSlice';
 import * as React from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { I18nManager, Pressable, StatusBar } from 'react-native';
-import { Snackbar, useTheme } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
-import BottomTabNavigation from './BottomTabNavigation';
-import { navigationRef } from './NavigationService';
-import Onboard from 'app/screens/Onboard';
-import Drawer from './Drawer';
+import { isTablet } from 'react-native-device-info';
 import FastImage from 'react-native-fast-image';
-import images from 'app/config/images';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Snackbar, useTheme } from 'react-native-paper';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { disableSnackbar } from 'app/store/slice/snackbarSlice';
-import { useEffect } from 'react';
-import CarListing from 'app/screens/CarListing';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { isTablet } from 'react-native-device-info';
-import CarDetails from 'app/screens/CarDetail';
-import CarDetail from 'app/screens/CarDetail';
+import { useDispatch, useSelector } from 'react-redux';
+import BottomTabNavigation from './BottomTabNavigation';
+import Drawer from './Drawer';
+import { navigationRef } from './NavigationService';
+import Chooser from 'app/screens/Chooser';
+import Login from 'app/screens/Login';
+import SignIn from 'app/screens/Signup';
+import Signup from 'app/screens/Signup';
 const Stack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
 const AppDrawer = createDrawerNavigator();
@@ -128,6 +132,26 @@ const AppNavigator = () => {
       <AppDrawer.Screen
         name={'CarDetail'}
         component={CarDetail}
+        options={defaultOptions}
+      />
+      <AppDrawer.Screen
+        name={'Search'}
+        component={Search}
+        options={defaultOptions}
+      />
+      <AppDrawer.Screen
+        name={'Chooser'}
+        component={Chooser}
+        options={defaultOptions}
+      />
+      <AppDrawer.Screen
+        name={'Login'}
+        component={Login}
+        options={defaultOptions}
+      />
+      <AppDrawer.Screen
+        name={'Signup'}
+        component={Signup}
         options={defaultOptions}
       />
     </AppDrawer.Navigator>

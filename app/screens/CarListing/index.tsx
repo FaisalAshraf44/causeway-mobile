@@ -1,17 +1,18 @@
 import React, { useCallback, useLayoutEffect } from 'react';
-import { FlatList, SafeAreaView, View } from 'react-native';
+import { FlatList, Pressable, SafeAreaView, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { useStyle } from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ImageCard from 'app/components/ImageCard';
+import images from 'app/config/images';
 
 const CarListing: React.FC = () => {
   const dispatch = useDispatch();
   const styles = useStyle();
   const theme = useTheme();
   const routes = useRoute<any>();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -26,14 +27,17 @@ const CarListing: React.FC = () => {
 
   const renderItem = useCallback(({ item }: any) => {
     return (
-      <ImageCard
-        style={styles.imagecard}
-        price={item?.price}
-        description={item?.description}
-        distance={item?.distance}
-        name={item?.name}
-        rating={item?.rating}
-      />
+      <Pressable onPress={() => navigation.navigate('CarDetail')}>
+        <ImageCard
+          style={styles.imagecard}
+          price={'21 RMB/Day'}
+          description={'Here goes the description'}
+          distance="212 miles"
+          name={'Honda'}
+          rating={'5'}
+          image={images.explore.blackCar}
+        />
+      </Pressable>
     );
   }, []);
 

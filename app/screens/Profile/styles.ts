@@ -5,21 +5,21 @@ import { RootState } from 'app/store/slice';
 import { useSelector } from 'react-redux';
 
 export const useStyle = () => {
-    const { colors } = useTheme();
-    const isDark = useSelector((state: RootState) => state.theme.isDark);
+  const { colors } = useTheme();
+  const isDark = useSelector((state: RootState) => state.theme.isDark);
 
-    const styles = () =>
-        StyleSheet.create({
-            container: {
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: isDark ? 'black' : 'white',
-            },
-            title: {
-                fontWeight: 'bold',
-                color: colors.primary,
-            },
-        });
-    return React.useMemo(() => styles(), [isDark]);
+  const styles = () =>
+    StyleSheet.create({
+      container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.background,
+      },
+      title: {
+        fontWeight: 'bold',
+        color: colors.primary,
+      },
+    });
+  return React.useMemo(() => styles(), [isDark]);
 };

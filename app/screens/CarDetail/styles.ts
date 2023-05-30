@@ -1,13 +1,12 @@
-import { Platform, StyleSheet } from 'react-native';
 import { RootState } from 'app/store/slice';
-import { useTheme } from 'react-native-paper';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import { isTablet } from 'react-native-device-info';
+import { useSelector } from 'react-redux';
 
 export const useStyle = () => {
   const theme = useTheme();
@@ -29,13 +28,11 @@ export const useStyle = () => {
         alignSelf: 'center',
       },
       nameText: {
-        color: 'white',
+        color: theme.colors.text,
         fontFamily: theme.fonts.boldFont,
-        fontSize: heightPercentageToDP(2.8),
+        fontSize: widthPercentageToDP(4.2),
       },
-      segmentContainer: {
-        marginTop: heightPercentageToDP(4),
-      },
+
       segmentSubContainer: {
         paddingTop: widthPercentageToDP(3),
         flexDirection: 'row',
@@ -44,20 +41,20 @@ export const useStyle = () => {
       bookingText: {
         color: 'white',
         fontFamily: theme.fonts.regularFont,
-        fontSize: widthPercentageToDP(4.5),
+        fontSize: widthPercentageToDP(4.3),
       },
       calanderImage: {
         height: heightPercentageToDP(3),
         width: widthPercentageToDP(6),
       },
       dateText: {
-        color: 'white',
+        color: theme.colors.text,
         fontFamily: theme.fonts.regularFont,
         fontSize: widthPercentageToDP(3.2),
         paddingVertical: heightPercentageToDP(0.4),
       },
       locText: {
-        color: 'white',
+        color: theme.colors.text,
         fontFamily: theme.fonts.regularFont,
         fontSize: widthPercentageToDP(3.2),
         paddingLeft: heightPercentageToDP(2),
@@ -75,9 +72,7 @@ export const useStyle = () => {
         flexDirection: 'row',
         alignItems: 'center',
       },
-      basicsContainer: {
-        marginTop: heightPercentageToDP(5),
-      },
+
       subicon: {
         flexDirection: 'column',
         alignItems: 'center',
@@ -86,7 +81,7 @@ export const useStyle = () => {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: widthPercentageToDP(4.2),
+        paddingHorizontal: widthPercentageToDP(2),
         paddingTop: heightPercentageToDP(2),
       },
       iconText: {
@@ -94,6 +89,38 @@ export const useStyle = () => {
         fontFamily: theme.fonts.regularFont,
         fontSize: widthPercentageToDP(2.8),
         paddingVertical: widthPercentageToDP(2.5),
+      },
+      buttonView: {
+        backgroundColor: theme.colors.glossyBlack,
+        width: '100%',
+        paddingVertical: heightPercentageToDP(1),
+        bottom: 0,
+        position: 'absolute',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: widthPercentageToDP(3),
+      },
+      button: {
+        width: widthPercentageToDP(40),
+        borderRadius: 6,
+      },
+      font: {
+        fontFamily: theme.fonts.regularFont,
+        fontSize: widthPercentageToDP(4),
+      },
+      viewAllText: { color: 'red', fontFamily: theme.fonts.regularFont },
+      features: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: widthPercentageToDP(3),
+        paddingTop: heightPercentageToDP(1.5),
+      },
+      divider: {
+        borderWidth: heightPercentageToDP(0.04),
+        borderColor: theme.colors.glossyBlack,
+        marginVertical: heightPercentageToDP(1.2),
       },
     });
   return React.useMemo(() => styles(), [isDark]);

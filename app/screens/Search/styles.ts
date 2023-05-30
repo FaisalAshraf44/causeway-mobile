@@ -21,12 +21,10 @@ export const useStyle = () => {
       },
       subContainer: {
         paddingTop: heightPercentageToDP(13),
+        flex: 1,
       },
       car: {
-        position: 'absolute',
-        right: 0,
-        top: heightPercentageToDP(5),
-        width: widthPercentageToDP(70),
+        width: widthPercentageToDP(90),
         height: heightPercentageToDP(25),
         zIndex: -1,
       },
@@ -42,29 +40,9 @@ export const useStyle = () => {
         fontFamily: theme.fonts.regularFont,
         color: theme.colors.text,
         paddingTop: heightPercentageToDP(0.7),
-      },
-      search: {
-        color: theme.colors.text,
-        fontFamily: theme.fonts.regularFont,
-        left: widthPercentageToDP(10),
-        position: 'absolute',
-        top: Platform.OS == 'ios' ? heightPercentageToDP(1.33) : -1,
-        zIndex: 500,
         width: widthPercentageToDP(80),
       },
-      searchParent: {
-        borderRadius: widthPercentageToDP(2),
-        overflow: 'hidden',
-        marginTop: heightPercentageToDP(2),
-        alignSelf: 'center',
-        backgroundColor: 'transparent',
-        zIndex: -1,
-      },
-      imagecard: {
-        marginTop: heightPercentageToDP(2),
-        backgroundColor: theme.colors.glossyBlack,
-        marginHorizontal: widthPercentageToDP(2),
-      },
+
       title: {
         fontSize: isTablet() ? widthPercentageToDP(2) : widthPercentageToDP(5),
         fontFamily: theme.fonts.boldFont,
@@ -82,14 +60,63 @@ export const useStyle = () => {
         height: heightPercentageToDP(30),
         alignSelf: 'center',
       },
-
-      sectionContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: heightPercentageToDP(2),
-        paddingHorizontal: widthPercentageToDP(5),
+      absolute: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        zIndex: -1,
       },
+      date: {
+        fontFamily: theme.fonts.boldFont,
+        fontSize: widthPercentageToDP(5),
+        color: theme.colors.text,
+      },
+      headerRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: widthPercentageToDP(4),
+        marginTop: heightPercentageToDP(10),
+      },
+      thumb: {
+        backgroundColor: theme.colors.text,
+        borderRadius: widthPercentageToDP(5),
+        padding: widthPercentageToDP(1),
+        borderWidth: widthPercentageToDP(0.2),
+        borderColor: theme.colors.primary,
+      },
+      buttonText: {
+        fontFamily: theme.fonts.regularFont,
+      },
+      sliderRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      button: { alignSelf: 'center', marginTop: heightPercentageToDP(2) },
+      thumbText: {
+        fontSize: widthPercentageToDP(2),
+        fontFamily: theme.fonts.regularFont,
+      },
+      divider: {
+        borderWidth: widthPercentageToDP(0.2),
+        borderColor: theme.colors.text,
+        width: widthPercentageToDP(30),
+      },
+      time: {
+        fontFamily: theme.fonts.regularFont,
+        fontSize: widthPercentageToDP(3),
+        paddingHorizontal: widthPercentageToDP(5),
+        color: theme.colors.text,
+      },
+      reset: {
+        position: 'absolute',
+        top: heightPercentageToDP(5),
+        right: widthPercentageToDP(6),
+        color: theme.colors.text,
+        fontFamily: theme.fonts.regularFont,
+        fontSize: widthPercentageToDP(4),
+      },
+      modalContainer: { backgroundColor: theme.colors.background, flex: 1 },
     });
   return React.useMemo(() => styles(), [isDark]);
 };

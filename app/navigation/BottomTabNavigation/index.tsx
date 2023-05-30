@@ -10,6 +10,7 @@ import Explore from '../../screens/Explore';
 import { useStyle } from './styles';
 import { BlurView } from '@react-native-community/blur';
 import { View } from 'react-native';
+import Profile from 'app/screens/Profile';
 const Tab = createBottomTabNavigator();
 const BottomTabNavigation = () => {
   const theme = useTheme();
@@ -34,6 +35,23 @@ const BottomTabNavigation = () => {
               source={images.bottomBar.search}
               tintColor={color}
               style={{ width: size, height: size }}
+              resizeMode="contain"
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <FastImage
+              source={images.bottomBar.profile}
+              tintColor={color}
+              style={{ width: size, height: size }}
+              resizeMode="contain"
             />
           ),
         }}

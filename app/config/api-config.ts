@@ -3,7 +3,7 @@
 const ApiConfig = {
   BASE_URL: 'http://wolverine-dev.com/',
   LOGIN: 'api/login',
-  HOME: '/getCars',
+  HOME: '/api/cars/find-by-filters',
 };
 
 export default ApiConfig;

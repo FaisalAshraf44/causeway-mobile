@@ -16,6 +16,16 @@ const images = {
   },
   global: {
     noData: require('../assets/Global/noData.json'),
+    logo: require('../assets/Global/logo.png'),
+    logoMini: require('../assets/Global/logoMini.png'),
+  },
+  socialLogin: {
+    google: require('../assets/socialLogin/google.png'),
+    apple: require('../assets/socialLogin/apple.png'),
+    facebook: require('../assets/socialLogin/facebook.png'),
+  },
+  chooser: {
+    google: require('../assets/Chooser/headphone.png'),
   },
   drawer: {
     drawer: require('../assets/drawer/drawer.png'),
@@ -32,6 +42,9 @@ const images = {
     cc: require('../assets/CarDetail/cc.png'),
     bigsmall: require('../assets/CarDetail/bigsmall.png'),
     auto: require('../assets/CarDetail/auto.png'),
+    ac: require('../assets/CarDetail/Ac.png'),
+    video: require('../assets/CarDetail/video.png'),
+    signal: require('../assets/CarDetail/signal.png'),
   },
   explore: {
     car: require('../assets/Explore/car.png'),

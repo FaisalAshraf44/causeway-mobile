@@ -11,13 +11,7 @@ const PrimaryButton: React.FC<Props> = (props) => {
   const theme = useTheme();
   return (
     <TouchableOpacity
-      style={[
-        styles.view,
-        props.style,
-        {
-          backgroundColor: theme.colors.primary,
-        },
-      ]}
+      style={[styles.view, props.style]}
       onPress={props.onPress}
     >
       <View style={styles.iconContainer}>

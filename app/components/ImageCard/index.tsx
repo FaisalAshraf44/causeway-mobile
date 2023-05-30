@@ -23,9 +23,10 @@ const ImageCard: React.FC<Props> = (props) => {
         </TouchableOpacity>
       </View>
       <FastImage
-        source={images.explore.blackCar}
+        source={props?.image}
         resizeMode="stretch"
         style={styles.carImage}
+        defaultSource={images.explore.car}
       />
       <View style={styles.nameParent}>
         <Text style={styles.nameText}>{props?.name}</Text>

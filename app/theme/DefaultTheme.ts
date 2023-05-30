@@ -9,6 +9,8 @@ export const defaultTheme = {
     text: 'white',
     inactive: '#4D4D4D',
     glossyBlack: '#1B1B1B',
+    borderColor: '#2E2E2E',
+    lightgrey: '#787878',
   },
   fonts: {
     lightFont: 'Oxygen-Light',
