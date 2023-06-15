@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import ImageCard from 'app/components/ImageCard';
 import Searchbar from 'app/components/Searchbar';
 import images from 'app/config/images';
@@ -23,9 +23,16 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Placeholder from './Placeholder';
 import { useStyle } from './styles';
+import Geolocation from '@react-native-community/geolocation';
+import { convertDistance, getDistance } from 'geolib';
+import getBlogs from 'app/services/getBlogs';
+import BlogCard from 'app/components/BlogCard';
+import { RootState } from 'app/store/slice';
+import patchFavorites from 'app/services/patchFavorites';
+import getFavorites from 'app/services/getFavorites';
 
 const Explore: React.FC = () => {
   const styles = useStyle();
@@ -33,52 +40,138 @@ const Explore: React.FC = () => {
   const navigation = useNavigation<any>();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [bookNow, setBookNow] = useState([]);
+  const [offers, setOffers] = useState([]);
+  const [blogs, setBlogs] = useState([]);
   const currentSkip = useRef(0);
-  // const [sections, setSections] = useState<Array<any>>([]);
+  const user = useSelector((state: RootState) => state.user.user);
+  const [favoriteData, setFavoriteData] = useState([]);
+  const isFocused = useIsFocused();
+  const getFavoritesData = async (noLoading?: boolean) => {
+    try {
+      const response = await getFavorites();
 
-  // const getArrayOfUniqueCategories = async (categories: Array<any>) => {
-  //   const temp = categories?.map((item: any) => {
-  //     return item?.type;
-  //   });
-  //   const filteredArray = [
-  //     ...new Set(
-  //       temp?.filter(function (item, pos, ary) {
-  //         return !pos || item != ary[pos - 1];
-  //       })
-  //     ),
-  //   ];
+      if (response?.status == 201 || response?.status == 200) {
+        console.log('res fav', response?.data?.results);
+        setFavoriteData(response?.data?.results);
+      }
+    } catch (err: any) {}
+  };
 
-  //   return filteredArray;
-  // };
-
-  // const reorderData = async (data: Array<any>) => {
-  //   const uniqueTypes: Array<string> = await getArrayOfUniqueCategories(data);
-  //   setSections(uniqueTypes);
-
-  //   let reorderedData: any = [];
-  //   uniqueTypes.forEach((element) => {
-  //     let filtered = data?.filter((item) => {
-  //       return item?.type == element;
-  //     });
-  //     let filteredObj = { title: element, data: filtered };
-  //     reorderedData = [...reorderedData, filteredObj];
-  //   });
-
-  //   setData(reorderedData);
-  // };
+  useEffect(() => {
+    let subscribed = true;
+    if (subscribed && isFocused) {
+      getFavoritesData();
+    }
+    return () => {
+      subscribed = false;
+    };
+  }, [isFocused]);
 
   const getHomeScreen = async () => {
     try {
       setIsLoading(true);
-      const response = await getHome(10, currentSkip?.current);
 
-      if (response?.status == 201) {
-        console.log('res', response?.data?.results[0]);
+      Geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            var bookNowResponse = await getHome(10, currentSkip?.current);
 
-        setBookNow(response?.data?.results);
+            if (bookNowResponse?.status == 201) {
+              Geolocation.getCurrentPosition(async (position) => {
+                const newArr = bookNowResponse?.data?.results?.map(
+                  (item: any) => {
+                    var pdis = getDistance(
+                      {
+                        latitude: item?.location?.coordinates[0],
+                        longitude: item?.location?.coordinates[1],
+                      },
+                      {
+                        latitude: position?.coords?.latitude,
+                        longitude: position?.coords?.longitude,
+                      },
+                      0.01
+                    );
+                    item.distance = pdis
+                      ? convertDistance(pdis, 'mi')?.toFixed()
+                      : '-';
+                    return item;
+                  }
+                );
+
+                const sorted = newArr?.sort(function (a: any, b: any) {
+                  return a?.distance - b?.distance;
+                });
+                setBookNow(sorted);
+                console.log('s', sorted);
+              });
+            }
+          } catch (err) {
+            console.log('Err', err);
+          }
+        },
+        async (err) => {
+          var bookNowResponse = await getHome(10, currentSkip?.current);
+          if (bookNowResponse?.status == 201) {
+            Geolocation.getCurrentPosition(async (position) => {
+              const newArr = bookNowResponse?.data?.results?.map(
+                (item: any) => {
+                  var pdis = getDistance(
+                    {
+                      latitude: item?.location?.coordinates[0],
+                      longitude: item?.location?.coordinates[1],
+                    },
+                    {
+                      latitude: position?.coords?.latitude,
+                      longitude: position?.coords?.longitude,
+                    },
+                    0.01
+                  );
+                  item.distance = pdis
+                    ? convertDistance(pdis, 'mi')?.toFixed()
+                    : '-';
+                  return item;
+                }
+              );
+              setBookNow(newArr);
+            });
+          }
+        }
+      );
+
+      const offersResponse = await getHome(10, currentSkip?.current, {
+        filters: {
+          offer: {
+            $exists: true,
+          },
+        },
+      });
+
+      if (offersResponse?.status == 201) {
+        Geolocation.getCurrentPosition(async (position) => {
+          const newArr = offersResponse?.data?.results?.map((item: any) => {
+            var pdis = getDistance(
+              {
+                latitude: item?.location?.coordinates[0],
+                longitude: item?.location?.coordinates[1],
+              },
+              {
+                latitude: position?.coords?.latitude,
+                longitude: position?.coords?.longitude,
+              },
+              0.01
+            );
+            item.distance = pdis ? convertDistance(pdis, 'mi')?.toFixed() : '-';
+            return item;
+          });
+          setOffers(newArr);
+        });
+        //get blogs
+        const blogsResponse = await getBlogs(10, currentSkip?.current, {});
+        if (blogsResponse?.status == 201) {
+          setBlogs(blogsResponse?.data?.results);
+        }
       } else {
         dispatch(enableSnackbar('Something went wrong, please try again.'));
       }
@@ -89,15 +182,34 @@ const Explore: React.FC = () => {
     }
   };
 
+  const renderBlogs = useCallback(({ item }: any) => {
+    return (
+      <Pressable
+        style={styles.blogContainer}
+        onPress={() =>
+          navigation.navigate('AppStack', { screen: 'Blog', params: item })
+        }
+      >
+        <BlogCard
+          image={{ uri: item?.images[0] }}
+          title={item?.title}
+          description={item?.content}
+          estimatedReadingTime={item?.estimatedReadingTime}
+          time={item?.updatedAt}
+        />
+      </Pressable>
+    );
+  }, []);
+
   useEffect(() => {
     let subscribed = true;
-    if (subscribed) {
+    if (subscribed && isFocused) {
       getHomeScreen();
     }
     return () => {
       subscribed = false;
     };
-  }, []);
+  }, [isFocused]);
 
   const renderEmptyComponent = () => {
     return (
@@ -115,21 +227,48 @@ const Explore: React.FC = () => {
     );
   };
 
-  const renderItem = useCallback(({ item }: any) => {
-    return (
-      <Pressable onPress={() => navigation.navigate('CarDetail')}>
-        <ImageCard
-          style={styles.imagecard}
-          price={'21 RMB/Day'}
-          description={'Here goes the description'}
-          distance="212 miles"
-          name={'Honda'}
-          rating={'5'}
-          image={images.explore.blackCar}
-        />
-      </Pressable>
-    );
-  }, []);
+  const renderItem = useCallback(
+    ({ item }: any, isOffer?: boolean) => {
+      let like = false;
+      const index = favoriteData?.findIndex((itemSub: any) => {
+        return itemSub?._id == item?._id;
+      });
+      if (index >= 0) {
+        like = true;
+      }
+      return (
+        <Pressable
+          onPress={() =>
+            navigation.navigate('AppStack', {
+              screen: 'CarDetail',
+              params: { id: item?._id },
+            })
+          }
+        >
+          <ImageCard
+            style={styles.imagecard}
+            id={item?._id}
+            price={item?.rentPerDay + '  RMB/Day'}
+            isOffer={isOffer}
+            isLiked={
+              favoriteData?.findIndex((itemSub: any) => {
+                return itemSub?._id == item?._id;
+              }) >= 0
+            }
+            description={item?.description}
+            distance={item?.distance ? item?.distance + ' mi' : 'N/A'}
+            features={item?.features}
+            name={item?.make}
+            rating={item?.rating?.value}
+            image={{
+              uri: item?.photos?.length > 0 ? item?.photos[0] : '',
+            }}
+          />
+        </Pressable>
+      );
+    },
+    [favoriteData]
+  );
 
   if (isLoading) return <Placeholder />;
 
@@ -143,8 +282,9 @@ const Explore: React.FC = () => {
       <Searchbar
         onChangeText={() => {}}
         placeholder="Search to Rent"
-        onFocus={() => {
-          Keyboard.dismiss();
+        placeholderColor={theme.colors.text}
+        dummy
+        onPress={() => {
           navigation.navigate('Search');
         }}
       />
@@ -153,58 +293,126 @@ const Explore: React.FC = () => {
           <RefreshControl
             enabled
             refreshing={isLoading}
-            onRefresh={getHomeScreen}
+            onRefresh={() => {
+              getHomeScreen();
+              getFavoritesData();
+            }}
           />
         }
       >
-        <View style={styles.sectionContainer}>
-          <Text style={styles.title}>Book Now</Text>
-          <Pressable
-            onPress={() =>
-              navigation.navigate('CarListing', {
-                data: bookNow,
-                title: 'Book Now',
-              })
-            }
-          >
-            <Text style={styles.viewAll}>View All</Text>
-          </Pressable>
-        </View>
+        {bookNow?.length > 0 ? (
+          <View style={styles.sectionContainer}>
+            <View style={styles.sectionSubContainer}>
+              <Text style={styles.title}>Book Now</Text>
+              <FastImage
+                resizeMode="contain"
+                source={images.explore.calender}
+                style={styles.img}
+              />
+            </View>
+            <Pressable
+              onPress={() =>
+                navigation.navigate('CarListing', {
+                  fromBooking: true,
+                  title: 'Book Now',
+                })
+              }
+            >
+              <Text style={styles.viewAll}>View All</Text>
+            </Pressable>
+          </View>
+        ) : null}
         <FlatList
           data={bookNow}
           horizontal
+          extraData={[user, favoriteData]}
           renderItem={renderItem}
+          style={{
+            paddingHorizontal: widthPercentageToDP(4),
+          }}
+          contentContainerStyle={{
+            paddingBottom: heightPercentageToDP(2),
+            paddingRight: widthPercentageToDP(4),
+          }}
+        />
+
+        {offers?.length > 0 ? (
+          <View style={styles.sectionContainer}>
+            <View style={styles.sectionSubContainer}>
+              <Text style={styles.title}>Offers</Text>
+              <FastImage
+                resizeMode="contain"
+                source={images.explore.percentage}
+                style={styles.img}
+              />
+            </View>
+            <Pressable
+              onPress={() =>
+                navigation.navigate('CarListing', {
+                  fromOffers: true,
+                  title: 'Offers',
+                })
+              }
+            >
+              <Text style={styles.viewAll}>View All</Text>
+            </Pressable>
+          </View>
+        ) : null}
+
+        <FlatList
+          data={offers}
+          horizontal
+          renderItem={(item) => renderItem(item, true)}
+          style={{
+            paddingHorizontal: widthPercentageToDP(4),
+          }}
+          contentContainerStyle={{
+            paddingBottom: heightPercentageToDP(2),
+            paddingRight: widthPercentageToDP(6),
+          }}
+        />
+
+        {/* blogs scope */}
+        {/* {blogs?.length > 0 ? (
+          <View style={styles.sectionContainer}>
+            <View style={styles.sectionSubContainer}>
+              <Text style={styles.title}>Blogs</Text>
+              <FastImage
+                resizeMode="contain"
+                source={images.explore.percentage}
+                style={styles.img}
+              />
+            </View>
+            <Pressable
+              onPress={() =>
+                navigation.navigate('CarListing', {
+                  fromBlogs: true,
+                  title: 'Blogs',
+                })
+              }
+            >
+              <Text style={styles.viewAll}>View All</Text>
+            </Pressable>
+          </View>
+        ) : null}
+
+        <FlatList
+          data={blogs}
+          horizontal
+          renderItem={renderBlogs}
           style={{
             paddingHorizontal: widthPercentageToDP(4),
             marginTop: heightPercentageToDP(1),
           }}
-          contentContainerStyle={{ paddingBottom: heightPercentageToDP(2) }}
-        />
-
-        <View style={styles.sectionContainer}>
-          <Text style={styles.title}>Offers</Text>
-          <Pressable
-            onPress={() =>
-              navigation.navigate('CarListing', {
-                data: bookNow,
-                title: 'Book Now',
-              })
-            }
-          >
-            <Text style={styles.viewAll}>View All</Text>
-          </Pressable>
-        </View>
-
-        <FlatList
-          data={bookNow}
-          horizontal
-          renderItem={renderItem}
-          style={{
-            paddingHorizontal: widthPercentageToDP(4),
-            marginTop: heightPercentageToDP(1),
+          contentContainerStyle={{
+            paddingBottom: heightPercentageToDP(2),
+            paddingRight: widthPercentageToDP(6),
           }}
-          contentContainerStyle={{ paddingBottom: heightPercentageToDP(2) }}
-        />
+        /> */}
+
+        {bookNow?.length < 1 && offers?.length < 1 && blogs?.length < 1
+          ? renderEmptyComponent()
+          : null}
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,3 +1,4 @@
 export interface LoadingState {
-    loading: boolean;
+  loading: boolean;
+  user: any;
 }

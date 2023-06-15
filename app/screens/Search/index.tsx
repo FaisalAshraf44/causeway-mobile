@@ -26,8 +26,7 @@ import {
 import { useDispatch } from 'react-redux';
 import Placeholder from './Placeholder';
 import { useStyle } from './styles';
-import filteredSearch from 'app/services/filteredSearch';
-import { enableSnackbar } from 'app/store/slice/snackbarSlice';
+import { results } from 'app/utils/dummyData';
 
 const Search: React.FC = () => {
   const styles = useStyle();
@@ -56,20 +55,19 @@ const Search: React.FC = () => {
   }, [firstSliderValue]);
 
   const continueSearch = async () => {
-    try {
-      setIsLoading(true);
-      const response = await filteredSearch();
+    setFilterEnabled(false);
 
-      if (response?.status == 201) {
-        console.log('res', response?.data);
-      } else {
-        dispatch(enableSnackbar('Something went wrong, please try again.'));
-      }
-    } catch {
-      dispatch(enableSnackbar('Something went wrong, please try again.'));
-    } finally {
-      setIsLoading(false);
-    }
+    navigation.navigate('AppStack', {
+      screen: 'FilteredSearch',
+      params: {
+        filtered: true,
+        data: results,
+        startDate: selectedFirst,
+        startTime: selectedFirstTime,
+        endDate: selectedSecond,
+        endTime: selectedSecondTime,
+      },
+    });
   };
 
   useEffect(() => {
@@ -104,10 +102,12 @@ const Search: React.FC = () => {
             styles={{ marginTop: 0, width: '90%', alignSelf: 'flex-start' }}
             placeholder="Search to rent"
             placeholderColor={'grey'}
+            dummy
             onPress={() => {
               Keyboard.dismiss();
-              setFilterEnabled(true);
+              setFilterEnabled((prev) => !prev);
             }}
+            onChangeText={() => {}}
           />
         );
       },
@@ -325,7 +325,8 @@ const Search: React.FC = () => {
           </View>
           <PrimaryButton
             title="Continue"
-            onPress={() => {}}
+            onPress={continueSearch}
+            disabled={!selectedFirst || !selectedSecond}
             style={styles.button}
             textStyle={styles.buttonText}
           />

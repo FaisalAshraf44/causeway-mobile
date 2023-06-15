@@ -9,6 +9,9 @@ declare global {
       borderColor: string;
       glossyBlack: string;
       lightgrey: string;
+      darkgrey: string;
+      dullWhite: string;
+      grey: string;
     }
 
     interface ThemeFonts {

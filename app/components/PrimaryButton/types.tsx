@@ -8,4 +8,6 @@ export interface Props {
   animating?: boolean;
   textStyle?: any;
   icon?: any;
+  disabled?: boolean;
+  disabledWhileAnimating?: boolean;
 }

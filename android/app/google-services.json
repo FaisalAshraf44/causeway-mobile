@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1052354359759",
+    "project_id": "causway-8efd4",
+    "storage_bucket": "causway-8efd4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1052354359759:android:7b2ca4bbff0dc7bf21a2ba",
+        "android_client_info": {
+          "package_name": "com.tx.causeway"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1052354359759-6tormjtp2kk1ivocb51fm3ua6sl0314b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl800CMbvL_UjZMvCqrupNaZlv01ZtDgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1052354359759-6tormjtp2kk1ivocb51fm3ua6sl0314b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

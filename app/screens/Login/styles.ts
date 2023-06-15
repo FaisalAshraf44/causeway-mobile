@@ -62,6 +62,7 @@ export const useStyle = () => {
       contentContainer: {
         alignItems: 'center',
         paddingBottom: heightPercentageToDP(10),
+        height: heightPercentageToDP(85),
       },
       logo: {
         height: heightPercentageToDP(10),

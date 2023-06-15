@@ -7,7 +7,7 @@ import Navigator from 'app/navigation';
 import RNRestart from 'react-native-restart';
 import { persistor, store } from 'app/store';
 import { RootState } from 'app/store/slice';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, LogBox, SafeAreaView, Text } from 'react-native';
 import codePush from 'react-native-code-push';
 import {
@@ -22,18 +22,22 @@ import { PersistGate } from 'redux-persist/es/integration/react';
 import DarkTheme from './theme/DarkTheme';
 import DefaultTheme from './theme/DefaultTheme';
 import ErrorBoundary from 'react-native-error-boundary';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RootNavigation: React.FC = () => {
   LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
   LogBox.ignoreAllLogs(); //Ignore all log notifications
   const isDark = useSelector((state: RootState) => state.theme.isDark);
   const theme = isDark ? DarkTheme : DefaultTheme;
-
+  useEffect(() => {
+    AsyncStorage.clear();
+  }, []);
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide();
     }, 2500);
   }, []);
+
   return (
     <PaperProvider theme={theme as any}>
       <Navigator />

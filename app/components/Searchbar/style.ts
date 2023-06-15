@@ -30,6 +30,7 @@ export const useStyle = () => {
         top: Platform.OS == 'ios' ? heightPercentageToDP(1.33) : -1,
         zIndex: 500,
         width: widthPercentageToDP(80),
+        // height: 400,
       },
       searchParent: {
         borderRadius: widthPercentageToDP(2),

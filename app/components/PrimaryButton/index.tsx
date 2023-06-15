@@ -11,8 +11,24 @@ const PrimaryButton: React.FC<Props> = (props) => {
   const theme = useTheme();
   return (
     <TouchableOpacity
-      style={[styles.view, props.style]}
-      onPress={props.onPress}
+      style={[
+        styles.view,
+        props.style,
+        {
+          backgroundColor:
+            props?.disabled == true ||
+            (props.animating == true && props.disabledWhileAnimating == true)
+              ? theme.colors.lightgrey
+              : theme.colors.primary,
+        },
+      ]}
+      onPress={() => {
+        if (
+          props?.disabled == true ||
+          (props.animating == true && props.disabledWhileAnimating == true)
+        ) {
+        } else props.onPress();
+      }}
     >
       <View style={styles.iconContainer}>
         {props?.icon ? props.icon() : null}

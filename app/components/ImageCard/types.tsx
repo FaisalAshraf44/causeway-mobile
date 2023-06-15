@@ -8,4 +8,10 @@ export interface Props {
   price?: string;
   style?: StyleProp<ViewStyle>;
   image?: any;
+  isOffer?: boolean;
+  features?: [];
+  id?: any;
+  fromFavoritesScreen?: boolean;
+  isLiked?: boolean | any;
+  returnCall?: () => void;
 }

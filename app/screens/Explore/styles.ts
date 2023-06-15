@@ -43,6 +43,10 @@ export const useStyle = () => {
         color: theme.colors.text,
         paddingTop: heightPercentageToDP(0.7),
       },
+      blogContainer: {
+        marginRight: widthPercentageToDP(3),
+        marginTop: heightPercentageToDP(1),
+      },
       search: {
         color: theme.colors.text,
         fontFamily: theme.fonts.regularFont,
@@ -89,6 +93,15 @@ export const useStyle = () => {
         alignItems: 'center',
         marginTop: heightPercentageToDP(2),
         paddingHorizontal: widthPercentageToDP(5),
+      },
+      sectionSubContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      img: {
+        marginLeft: widthPercentageToDP(0.4),
+        width: widthPercentageToDP(7.7),
+        height: heightPercentageToDP(2.7),
       },
     });
   return React.useMemo(() => styles(), [isDark]);

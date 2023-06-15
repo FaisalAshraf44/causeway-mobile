@@ -38,7 +38,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string>Please provide location in order to track your location.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -75,5 +75,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Please provide location in order to track your location.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Please provide location in order to track your location.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please provide library access to pick image for the car.</string>
 </dict>
 </plist>

@@ -21,7 +21,7 @@ export const useStyle = () => {
         backgroundColor: theme.colors.glossyBlack,
         height:
           Platform.OS == 'ios'
-            ? heightPercentageToDP(12)
+            ? heightPercentageToDP(8.5)
             : heightPercentageToDP(8),
         paddingBottom: heightPercentageToDP(1),
       },

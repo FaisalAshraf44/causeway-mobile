@@ -1,28 +1,31 @@
-import React from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-} from 'react-native';
-import { useStyle } from './styles';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
-import FastImage from 'react-native-fast-image';
-import images from 'app/config/images';
-import PrimaryButton from 'app/components/PrimaryButton';
+  CommonActions,
+  StackActions,
+  useNavigation,
+} from '@react-navigation/native';
 import InputBoxWithIcon from 'app/components/InputBoxWithIcon';
+import PrimaryButton from 'app/components/PrimaryButton';
+import images from 'app/config/images';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { Keyboard, Text, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useTheme } from 'react-native-paper';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { useTheme } from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useStyle } from './styles';
+import { useDispatch } from 'react-redux';
+import { enableSnackbar } from 'app/store/slice/snackbarSlice';
+import signUpUser from 'app/services/signUpUser';
+import { onLogin } from 'app/store/slice/userSlice';
 
 const Signup: React.FC = () => {
   const styles = useStyle();
@@ -31,6 +34,51 @@ const Signup: React.FC = () => {
   const navigation = useNavigation<any>();
   const { control, handleSubmit, reset, trigger, formState, getValues } =
     useForm();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const signUp = async (data?: any) => {
+    Keyboard.dismiss();
+
+    if (!ValidateEmail(data?.email)) {
+      dispatch(enableSnackbar('Please input the correct email address.'));
+      return;
+    }
+    if (data?.password != data?.confirmPassword) {
+      dispatch(enableSnackbar('Passwords do not match'));
+      return;
+    }
+    try {
+      setIsLoading(true);
+      const response = await signUpUser(
+        data?.name,
+        data?.email,
+        data?.password,
+        data?.phone
+      );
+
+      if (response?.status == 200) {
+        dispatch(onLogin(response?.data));
+      } else {
+        dispatch(enableSnackbar('Something went wrong. Please try again.'));
+      }
+      navigation.navigate('Explore');
+
+      dispatch(enableSnackbar('Successfully signed up.'));
+    } catch (err) {
+      dispatch(enableSnackbar('Something went wrong. Please try again.'));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const ValidateEmail = (email: string) => {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      return true;
+    }
+
+    return false;
+  };
   return (
     <KeyboardAwareScrollView
       style={styles.container}
@@ -48,12 +96,12 @@ const Signup: React.FC = () => {
         <Controller
           control={control}
           rules={{
-            required: false,
+            required: true,
           }}
           render={({ field: { onChange, value } }) => (
             <InputBoxWithIcon
               onChangeText={onChange}
-              numberOfCharacter={0}
+              numberOfCharacter={30}
               value={value}
               placeholder="Name"
               renderIcon={() => (
@@ -68,7 +116,7 @@ const Signup: React.FC = () => {
           name="name"
         />
 
-        {formState.errors.location && (
+        {formState.errors.name && (
           <Text
             style={[
               styles.error,
@@ -84,12 +132,12 @@ const Signup: React.FC = () => {
         <Controller
           control={control}
           rules={{
-            required: false,
+            required: true,
           }}
           render={({ field: { onChange, value } }) => (
             <InputBoxWithIcon
               onChangeText={onChange}
-              numberOfCharacter={0}
+              numberOfCharacter={30}
               value={value}
               placeholder="Email"
               renderIcon={() => (
@@ -104,7 +152,7 @@ const Signup: React.FC = () => {
           name="email"
         />
 
-        {formState.errors.location && (
+        {formState.errors.email && (
           <Text
             style={[
               styles.error,
@@ -120,12 +168,12 @@ const Signup: React.FC = () => {
         <Controller
           control={control}
           rules={{
-            required: false,
+            required: true,
           }}
           render={({ field: { onChange, value } }) => (
             <InputBoxWithIcon
               onChangeText={onChange}
-              numberOfCharacter={0}
+              numberOfCharacter={30}
               value={value}
               placeholder="Phone"
               keyboardType="dialpad"
@@ -141,7 +189,7 @@ const Signup: React.FC = () => {
           name="phone"
         />
 
-        {formState.errors.location && (
+        {formState.errors.phone && (
           <Text
             style={[
               styles.error,
@@ -157,12 +205,12 @@ const Signup: React.FC = () => {
         <Controller
           control={control}
           rules={{
-            required: false,
+            required: true,
           }}
           render={({ field: { onChange, value } }) => (
             <InputBoxWithIcon
               onChangeText={onChange}
-              numberOfCharacter={0}
+              numberOfCharacter={30}
               value={value}
               placeholder="Password"
               type="password"
@@ -178,7 +226,7 @@ const Signup: React.FC = () => {
           name="password"
         />
 
-        {formState.errors.location && (
+        {formState.errors.password && (
           <Text
             style={[
               styles.error,
@@ -196,12 +244,12 @@ const Signup: React.FC = () => {
         <Controller
           control={control}
           rules={{
-            required: false,
+            required: true,
           }}
           render={({ field: { onChange, value } }) => (
             <InputBoxWithIcon
               onChangeText={onChange}
-              numberOfCharacter={0}
+              numberOfCharacter={30}
               value={value}
               placeholder="Confirm Password"
               type="password"
@@ -217,7 +265,7 @@ const Signup: React.FC = () => {
           name="confirmPassword"
         />
 
-        {formState.errors.location && (
+        {formState.errors.confirmPassword && (
           <Text
             style={[
               styles.error,
@@ -228,7 +276,12 @@ const Signup: React.FC = () => {
           </Text>
         )}
       </View>
-      <PrimaryButton title="Sign Up" onPress={() => {}} />
+      <PrimaryButton
+        title="Sign Up"
+        disabledWhileAnimating
+        onPress={handleSubmit(signUp)}
+        animating={isLoading}
+      />
 
       <View style={[styles.row, { marginTop: heightPercentageToDP(2) }]}>
         <View style={styles.halfDivider} />
