@@ -15,10 +15,20 @@ const PrimaryButton: React.FC<Props> = (props) => {
         styles.view,
         props.style,
         {
-          backgroundColor: theme.colors.primary,
+          backgroundColor:
+            props?.disabled == true ||
+            (props.animating == true && props.disabledWhileAnimating == true)
+              ? theme.colors.lightgrey
+              : theme.colors.primary,
         },
       ]}
-      onPress={props.onPress}
+      onPress={() => {
+        if (
+          props?.disabled == true ||
+          (props.animating == true && props.disabledWhileAnimating == true)
+        ) {
+        } else props.onPress();
+      }}
     >
       <View style={styles.iconContainer}>
         {props?.icon ? props.icon() : null}

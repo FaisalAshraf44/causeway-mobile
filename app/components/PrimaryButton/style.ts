@@ -16,6 +16,7 @@ export const useStyle = () => {
       view: {
         justifyContent: 'center',
         alignItems: 'center',
+
         width: widthPercentageToDP(90),
         padding: DeviceInfo.isTablet()
           ? widthPercentageToDP(2)

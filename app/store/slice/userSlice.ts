@@ -5,10 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { LoginState } from 'app/models/reducers/login';
 const initialState: LoginState = {
-  isLoggedIn: false,
-  id: 0,
-  username: '',
-  password: '',
+  user: undefined,
   firstRun: true,
 };
 
@@ -19,13 +16,16 @@ const loginSlice = createSlice({
     onLogin: (state, action) => {
       return {
         ...state,
-        isLoggedIn: true,
-        ...action.payload,
+        user: action.payload,
       };
     },
-    logOut: () => {
-      return initialState;
+    onLogout: (state) => {
+      return {
+        ...state,
+        user: undefined,
+      };
     },
+
     //imp
     completeFirstRun: (state) => {
       return {
@@ -36,5 +36,5 @@ const loginSlice = createSlice({
   },
 });
 
-export const { onLogin, logOut, completeFirstRun } = loginSlice.actions;
+export const { onLogin, completeFirstRun, onLogout } = loginSlice.actions;
 export default loginSlice.reducer;
