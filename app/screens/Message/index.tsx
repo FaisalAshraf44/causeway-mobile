@@ -1,16 +1,16 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { RootState } from 'app/store/slice';
-import { keyExtractor } from 'app/utils/stringUtils';
-import useKeyboard from 'app/utils/useKeyboard';
-import moment from 'moment';
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { RootState } from "app/store/slice";
+import { keyExtractor } from "app/utils/stringUtils";
+import useKeyboard from "app/utils/useKeyboard";
+import moment from "moment";
 import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
   useState,
-} from 'react';
-import { useTranslation } from 'react-i18next';
+} from "react";
+import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   Platform,
@@ -18,15 +18,15 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat';
-import { useTheme } from 'react-native-paper';
+} from "react-native";
+import { GiftedChat } from "react-native-gifted-chat";
+import { useTheme } from "react-native-paper";
 import {
   heightPercentageToDP,
   widthPercentageToDP,
-} from 'react-native-responsive-screen';
-import { useDispatch, useSelector } from 'react-redux';
-import { useStyle } from './styles';
+} from "react-native-responsive-screen";
+import { useDispatch, useSelector } from "react-redux";
+import { useStyle } from "./styles";
 
 const Message: React.FC = () => {
   const route = useRoute<any>();
@@ -41,26 +41,26 @@ const Message: React.FC = () => {
   const [data, setData] = useState([
     {
       _id: 1,
-      text: 'Hi',
+      text: "Hi",
       createdAt: new Date(),
       // status: message?.messageStatus,
       messageType: 1,
       user: {
         _id: 1,
-        name: 'Hannad Ahmad',
-        avatar: '',
+        name: "Hannad Ahmad",
+        avatar: "",
       },
     },
     {
       _id: 2,
-      text: 'How are you',
+      text: "How are you",
       createdAt: new Date(),
       // status: message?.messageStatus,
       messageType: 2,
       user: {
         _id: 1,
-        name: 'Hannad Ahmad',
-        avatar: '',
+        name: "Hannad Ahmad",
+        avatar: "",
       },
     },
     {
@@ -71,13 +71,13 @@ const Message: React.FC = () => {
       messageType: 2,
       user: {
         _id: 1,
-        name: 'Haris',
-        avatar: '',
+        name: "Haris",
+        avatar: "",
       },
     },
   ]);
   const [length, setLength] = useState(0);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [count, setCount] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const ref = useRef<any>();
@@ -119,7 +119,7 @@ const Message: React.FC = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      headerTitleAlign: 'center',
+      headerTitleAlign: "center",
       headerTitle: route?.params?.title,
       headerTransparent: true,
     });
@@ -175,7 +175,7 @@ const Message: React.FC = () => {
   // }, []);
 
   const onSend = (message: any) => {
-    setMessage('');
+    setMessage("");
     const body = {
       _id: `${keyExtractor()}`,
       createdAt: new Date(),
@@ -203,22 +203,22 @@ const Message: React.FC = () => {
         style={[
           styles.messageContainer,
           {
-            bottom: Platform.OS == 'android' ? bottom : undefined,
-            position: Platform.OS == 'android' ? 'absolute' : 'relative',
-            alignSelf: Platform.OS == 'ios' ? 'center' : undefined,
-            width: Platform?.OS == 'ios' ? widthPercentageToDP(95) : undefined,
+            bottom: Platform.OS == "android" ? bottom : undefined,
+            position: Platform.OS == "android" ? "absolute" : "relative",
+            alignSelf: Platform.OS == "ios" ? "center" : undefined,
+            width: Platform?.OS == "ios" ? widthPercentageToDP(95) : undefined,
           },
         ]}
       >
         <TextInput
           onChangeText={setMessage}
-          placeholder={t('Write Message')}
+          placeholder={t("Write Message")}
           value={message}
-          placeholderTextColor={'rgba(255, 255, 255, 0.4)'}
+          placeholderTextColor={"rgba(255, 255, 255, 0.4)"}
           style={styles.font}
         />
         <TouchableOpacity
-          onPress={() => (message != '' ? onSend(message) : () => {})}
+          onPress={() => (message != "" ? onSend(message) : () => {})}
         >
           <Text style={styles.send}>Send</Text>
         </TouchableOpacity>
@@ -231,10 +231,10 @@ const Message: React.FC = () => {
       <Text
         style={{
           fontSize: widthPercentageToDP(3),
-          color: mess?.currentMessage?.messageType == 1 ? 'grey' : 'white',
+          color: mess?.currentMessage?.messageType == 1 ? "grey" : "white",
           paddingHorizontal: widthPercentageToDP(2.5),
           alignSelf:
-            mess?.currentMessage?.messageType == 1 ? 'flex-start' : 'flex-end',
+            mess?.currentMessage?.messageType == 1 ? "flex-start" : "flex-end",
           paddingVertical: heightPercentageToDP(0.5),
         }}
       >
@@ -249,17 +249,17 @@ const Message: React.FC = () => {
         <Text
           style={{
             fontSize: widthPercentageToDP(3),
-            color: 'white',
+            color: "white",
             paddingHorizontal: widthPercentageToDP(2.5),
             alignSelf:
               time?.currentMessage?.messageType == 1
-                ? 'flex-start'
-                : 'flex-end',
+                ? "flex-start"
+                : "flex-end",
           }}
         >
           {time?.currentMessage?.status == 4
-            ? ' '
-            : moment(time?.currentMessage?.createdAt).format('hh:mm a')}
+            ? " "
+            : moment(time?.currentMessage?.createdAt).format("hh:mm a")}
         </Text>
         {renderCustomView(time)}
       </View>
@@ -271,7 +271,7 @@ const Message: React.FC = () => {
       <View style={styles.containerBubble}>
         {props?.currentMessage?.user?._id == 2 ? (
           <Text style={styles.time}>
-            {moment(props?.currentMessage?.createdAt).format('hh:mm a')}
+            {moment(props?.currentMessage?.createdAt).format("hh:mm a")}
           </Text>
         ) : null}
         <View style={styles.bubble}>
@@ -281,7 +281,7 @@ const Message: React.FC = () => {
         </View>
         {props?.currentMessage?.user?._id == 1 ? (
           <Text style={styles.time}>
-            {moment(props?.currentMessage?.createdAt).format('hh:mm a')}
+            {moment(props?.currentMessage?.createdAt).format("hh:mm a")}
           </Text>
         ) : null}
       </View>

@@ -1,12 +1,12 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import ImageCard from 'app/components/ImageCard';
-import Searchbar from 'app/components/Searchbar';
-import images from 'app/config/images';
-import getHome from 'app/services/getHome';
-import { enableSnackbar } from 'app/store/slice/snackbarSlice';
-import Lottie from 'lottie-react-native';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import ImageCard from "app/components/ImageCard";
+import Searchbar from "app/components/Searchbar";
+import images from "app/config/images";
+import getHome from "app/services/getHome";
+import { enableSnackbar } from "app/store/slice/snackbarSlice";
+import Lottie from "lottie-react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   FlatList,
   Keyboard,
@@ -16,23 +16,23 @@ import {
   ScrollView,
   Text,
   View,
-} from 'react-native';
-import FastImage from 'react-native-fast-image';
-import { useTheme } from 'react-native-paper';
+} from "react-native";
+import FastImage from "react-native-fast-image";
+import { useTheme } from "react-native-paper";
 import {
   heightPercentageToDP,
   widthPercentageToDP,
-} from 'react-native-responsive-screen';
-import { useDispatch, useSelector } from 'react-redux';
-import Placeholder from './Placeholder';
-import { useStyle } from './styles';
-import Geolocation from '@react-native-community/geolocation';
-import { convertDistance, getDistance } from 'geolib';
-import getBlogs from 'app/services/getBlogs';
-import BlogCard from 'app/components/BlogCard';
-import { RootState } from 'app/store/slice';
-import patchFavorites from 'app/services/patchFavorites';
-import getFavorites from 'app/services/getFavorites';
+} from "react-native-responsive-screen";
+import { useDispatch, useSelector } from "react-redux";
+import Placeholder from "./Placeholder";
+import { useStyle } from "./styles";
+import Geolocation from "@react-native-community/geolocation";
+import { convertDistance, getDistance } from "geolib";
+import getBlogs from "app/services/getBlogs";
+import BlogCard from "app/components/BlogCard";
+import { RootState } from "app/store/slice";
+import patchFavorites from "app/services/patchFavorites";
+import getFavorites from "app/services/getFavorites";
 
 const Explore: React.FC = () => {
   const styles = useStyle();
@@ -53,7 +53,7 @@ const Explore: React.FC = () => {
       const response = await getFavorites();
 
       if (response?.status == 201 || response?.status == 200) {
-        console.log('res fav', response?.data?.results);
+        console.log("res fav", response?.data?.results);
         setFavoriteData(response?.data?.results);
       }
     } catch (err: any) {}
@@ -82,21 +82,23 @@ const Explore: React.FC = () => {
               Geolocation.getCurrentPosition(async (position) => {
                 const newArr = bookNowResponse?.data?.results?.map(
                   (item: any) => {
-                    var pdis = getDistance(
-                      {
-                        latitude: item?.location?.coordinates[0],
-                        longitude: item?.location?.coordinates[1],
-                      },
-                      {
-                        latitude: position?.coords?.latitude,
-                        longitude: position?.coords?.longitude,
-                      },
-                      0.01
-                    );
-                    item.distance = pdis
-                      ? convertDistance(pdis, 'mi')?.toFixed()
-                      : '-';
-                    return item;
+                    if (item?.location) {
+                      var pdis = getDistance(
+                        {
+                          latitude: item?.location?.coordinates[0],
+                          longitude: item?.location?.coordinates[1],
+                        },
+                        {
+                          latitude: position?.coords?.latitude,
+                          longitude: position?.coords?.longitude,
+                        },
+                        0.01
+                      );
+                      item.distance = pdis
+                        ? convertDistance(pdis, "mi")?.toFixed()
+                        : "-";
+                      return item;
+                    }
                   }
                 );
 
@@ -104,11 +106,11 @@ const Explore: React.FC = () => {
                   return a?.distance - b?.distance;
                 });
                 setBookNow(sorted);
-                console.log('s', sorted);
+                console.log("s", sorted);
               });
             }
           } catch (err) {
-            console.log('Err', err);
+            console.log("Err", err);
           }
         },
         async (err) => {
@@ -129,8 +131,8 @@ const Explore: React.FC = () => {
                     0.01
                   );
                   item.distance = pdis
-                    ? convertDistance(pdis, 'mi')?.toFixed()
-                    : '-';
+                    ? convertDistance(pdis, "mi")?.toFixed()
+                    : "-";
                   return item;
                 }
               );
@@ -162,7 +164,7 @@ const Explore: React.FC = () => {
               },
               0.01
             );
-            item.distance = pdis ? convertDistance(pdis, 'mi')?.toFixed() : '-';
+            item.distance = pdis ? convertDistance(pdis, "mi")?.toFixed() : "-";
             return item;
           });
           setOffers(newArr);
@@ -173,10 +175,10 @@ const Explore: React.FC = () => {
           setBlogs(blogsResponse?.data?.results);
         }
       } else {
-        dispatch(enableSnackbar('Something went wrong, please try again.'));
+        dispatch(enableSnackbar("Something went wrong, please try again."));
       }
     } catch {
-      dispatch(enableSnackbar('Something went wrong, please try again.'));
+      dispatch(enableSnackbar("Something went wrong, please try again."));
     } finally {
       setIsLoading(false);
     }
@@ -187,7 +189,7 @@ const Explore: React.FC = () => {
       <Pressable
         style={styles.blogContainer}
         onPress={() =>
-          navigation.navigate('AppStack', { screen: 'Blog', params: item })
+          navigation.navigate("AppStack", { screen: "Blog", params: item })
         }
       >
         <BlogCard
@@ -218,7 +220,7 @@ const Explore: React.FC = () => {
         <Text
           style={[
             styles.subheader,
-            { color: theme.colors.text, textAlign: 'center' },
+            { color: theme.colors.text, textAlign: "center" },
           ]}
         >
           No data found
@@ -239,8 +241,8 @@ const Explore: React.FC = () => {
       return (
         <Pressable
           onPress={() =>
-            navigation.navigate('AppStack', {
-              screen: 'CarDetail',
+            navigation.navigate("AppStack", {
+              screen: "CarDetail",
               params: { id: item?._id },
             })
           }
@@ -248,7 +250,7 @@ const Explore: React.FC = () => {
           <ImageCard
             style={styles.imagecard}
             id={item?._id}
-            price={item?.rentPerDay + '  RMB/Day'}
+            price={item?.rentPerDay + "  RMB/Day"}
             isOffer={isOffer}
             isLiked={
               favoriteData?.findIndex((itemSub: any) => {
@@ -256,12 +258,12 @@ const Explore: React.FC = () => {
               }) >= 0
             }
             description={item?.description}
-            distance={item?.distance ? item?.distance + ' mi' : 'N/A'}
+            distance={item?.distance ? item?.distance + " mi" : "N/A"}
             features={item?.features}
-            name={item?.make}
+            name={item?.model}
             rating={item?.rating?.value}
             image={{
-              uri: item?.photos?.length > 0 ? item?.photos[0] : '',
+              uri: item?.photos?.length > 0 ? item?.photos[0] : "",
             }}
           />
         </Pressable>
@@ -276,8 +278,8 @@ const Explore: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.subContainer}>
         <FastImage source={images.explore.car} style={styles.car} />
-        <Text style={styles.headerText}>{t('EXPERIENCE')}</Text>
-        <Text style={styles.subheader}>{t('BEST WITH US')}</Text>
+        <Text style={styles.headerText}>{t("EXPERIENCE")}</Text>
+        <Text style={styles.subheader}>{t("BEST WITH US")}</Text>
       </View>
       <Searchbar
         onChangeText={() => {}}
@@ -285,7 +287,7 @@ const Explore: React.FC = () => {
         placeholderColor={theme.colors.text}
         dummy
         onPress={() => {
-          navigation.navigate('Search');
+          navigation.navigate("Search");
         }}
       />
       <ScrollView
@@ -312,9 +314,9 @@ const Explore: React.FC = () => {
             </View>
             <Pressable
               onPress={() =>
-                navigation.navigate('CarListing', {
+                navigation.navigate("CarListing", {
                   fromBooking: true,
-                  title: 'Book Now',
+                  title: "Book Now",
                 })
               }
             >
@@ -348,9 +350,9 @@ const Explore: React.FC = () => {
             </View>
             <Pressable
               onPress={() =>
-                navigation.navigate('CarListing', {
+                navigation.navigate("CarListing", {
                   fromOffers: true,
-                  title: 'Offers',
+                  title: "Offers",
                 })
               }
             >

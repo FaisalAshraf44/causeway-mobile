@@ -1,19 +1,20 @@
-import { Slider } from '@miblanchard/react-native-slider';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Slider } from "@miblanchard/react-native-slider";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   useIsFocused,
   useNavigation,
   useRoute,
-} from '@react-navigation/native';
-import PrimaryButton from 'app/components/PrimaryButton';
-import images from 'app/config/images';
-import getCarDetail from 'app/services/getCarDetail';
-import { enableSnackbar } from 'app/store/slice/snackbarSlice';
-import moment from 'moment';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Modal as ModalPaper } from 'react-native-paper';
+} from "@react-navigation/native";
+import PrimaryButton from "app/components/PrimaryButton";
+import images from "app/config/images";
+import getCarDetail from "app/services/getCarDetail";
+import { enableSnackbar } from "app/store/slice/snackbarSlice";
+import moment from "moment";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Modal as ModalPaper } from "react-native-paper";
 import {
+  ActivityIndicator,
   Modal,
   Pressable,
   SafeAreaView,
@@ -21,18 +22,18 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import { Calendar } from 'react-native-calendars';
-import FastImage from 'react-native-fast-image';
-import { useTheme } from 'react-native-paper';
+} from "react-native";
+import { Calendar } from "react-native-calendars";
+import FastImage from "react-native-fast-image";
+import { useTheme } from "react-native-paper";
 import {
   heightPercentageToDP,
   widthPercentageToDP,
-} from 'react-native-responsive-screen';
-import { useDispatch } from 'react-redux';
-import Placeholder from './Placeholder';
-import { useStyle } from './styles';
-import Carousel from 'react-native-reanimated-carousel';
+} from "react-native-responsive-screen";
+import { useDispatch } from "react-redux";
+import Placeholder from "./Placeholder";
+import { useStyle } from "./styles";
+import Carousel from "react-native-reanimated-carousel";
 
 const CarDetail: React.FC = () => {
   const styles = useStyle();
@@ -46,12 +47,12 @@ const CarDetail: React.FC = () => {
   const isFocused = useIsFocused();
   const [showAllFeatures, setShowAllFeatures] = useState(false);
   const [filterEnabled, setFilterEnabled] = useState(false);
-  const [selectedFirst, setSelectedFirst] = useState('');
-  const [selectedSecond, setSelectedSecond] = useState('');
+  const [selectedFirst, setSelectedFirst] = useState("");
+  const [selectedSecond, setSelectedSecond] = useState("");
   const [selectedFirstTime, setSelectedFirstTime] =
-    useState('7/10/2013 00:00:00');
+    useState("7/10/2013 00:00:00");
   const [selectedSecondTime, setSelectedSecondTime] =
-    useState('7/10/2013 00:00:00');
+    useState("7/10/2013 00:00:00");
 
   const [firstSliderValue, setFirstSliderValue] = useState<any>(0);
   const [secondSliderValue, setSecondSliderValue] = useState<any>(0);
@@ -70,20 +71,20 @@ const CarDetail: React.FC = () => {
     selectedDayBackgroundColor: theme.colors.primary,
   };
 
-  const renderThumb = (type: 'start' | 'end') => {
+  const renderThumb = (type: "start" | "end") => {
     return (
       <View style={styles.thumb}>
         <Text style={styles.thumbText}>
-          {type == 'start'
-            ? moment(selectedFirstTime).format('hh:mm a')
-            : moment(selectedSecondTime).format('hh:mm a')}
+          {type == "start"
+            ? moment(selectedFirstTime).format("hh:mm a")
+            : moment(selectedSecondTime).format("hh:mm a")}
         </Text>
       </View>
     );
   };
 
   useEffect(() => {
-    AsyncStorage.getItem('TEMP_CHOOSE').then((params: any) => {
+    AsyncStorage.getItem("TEMP_CHOOSE").then((params: any) => {
       const parsed: any = JSON.parse(params);
       setChooseParams(parsed);
       AsyncStorage.clear();
@@ -113,10 +114,10 @@ const CarDetail: React.FC = () => {
       if (response?.status == 200) {
         setData(response?.data);
       } else {
-        dispatch(enableSnackbar('Something went wrong'));
+        dispatch(enableSnackbar("Something went wrong"));
       }
     } catch {
-      dispatch(enableSnackbar('Something went wrong'));
+      dispatch(enableSnackbar("Something went wrong"));
     } finally {
       setIsLoading(false);
     }
@@ -134,7 +135,7 @@ const CarDetail: React.FC = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: 'Car Details',
+      headerTitle: "Car Details",
       headerStyle: {
         backgroundColor: theme.colors.glossyBlack,
       },
@@ -157,10 +158,10 @@ const CarDetail: React.FC = () => {
           data={data?.photos}
           width={widthPercentageToDP(100)}
           height={heightPercentageToDP(30)}
-          renderItem={() => (
+          renderItem={({ item, index }) => (
             <FastImage
               source={{
-                uri: data?.photos?.length > 0 ? data?.photos[0] : undefined,
+                uri: data?.photos?.length > 0 ? item : undefined,
               }}
               resizeMode="stretch"
               style={styles.carImage}
@@ -169,7 +170,7 @@ const CarDetail: React.FC = () => {
         />
 
         <View style={styles.subcontainer}>
-          <Text style={styles.nameText}>{data?.make + ' ' + data?.model}</Text>
+          <Text style={styles.nameText}>{data?.model}</Text>
           <View>
             <View style={styles.divider} />
             <Text style={styles.bookingText}>Booking period</Text>
@@ -183,17 +184,17 @@ const CarDetail: React.FC = () => {
                 <View style={styles.dateTextContainer}>
                   <Text style={styles.dateText}>
                     {selectedFirst
-                      ? moment(selectedFirst).format('ddd, DD, MMMM') +
-                        ' ' +
-                        moment(selectedFirstTime).format('hh:mm a')
-                      : 'Select Date and Time'}
+                      ? moment(selectedFirst).format("ddd, DD, MMMM") +
+                        " " +
+                        moment(selectedFirstTime).format("hh:mm a")
+                      : "Select Date and Time"}
                   </Text>
                   <Text style={styles.dateText}>
                     {selectedSecond
-                      ? moment(selectedSecond).format('ddd, DD, MMMM') +
-                        ' ' +
-                        moment(selectedSecondTime).format('hh:mm a')
-                      : 'Select Date and Time'}
+                      ? moment(selectedSecond).format("ddd, DD, MMMM") +
+                        " " +
+                        moment(selectedSecondTime).format("hh:mm a")
+                      : "Select Date and Time"}
                   </Text>
                 </View>
               </View>
@@ -217,10 +218,10 @@ const CarDetail: React.FC = () => {
                     resizeMode="stretch"
                     style={styles.calanderImage}
                   />
-                  {console.log('chosose', chooseParams)}
-                  <Text style={[styles.locText, { maxWidth: '90%' }]}>
+                  {console.log("chosose", chooseParams)}
+                  <Text style={[styles.locText, { maxWidth: "90%" }]}>
                     {!chooseParams
-                      ? 'Choose pick-up type'
+                      ? "Choose pick-up type"
                       : chooseParams?.selection == 1
                       ? data?.location?.address
                       : chooseParams?.pickup?.address}
@@ -231,7 +232,7 @@ const CarDetail: React.FC = () => {
               <Pressable
                 onPress={() => {
                   navigation.navigate(
-                    'Choose',
+                    "Choose",
                     chooseParams
                       ? chooseParams
                       : { extraAddress: data?.location }
@@ -297,44 +298,44 @@ const CarDetail: React.FC = () => {
           <View>
             <Text style={styles.bookingText}>Features</Text>
             <View style={styles.features}>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: "row" }}>
                 {data?.features.map((item: any, index: number) => {
                   return (
                     <>
                       {index < 4 ? (
                         <FastImage
-                          key={'item_' + item}
+                          key={"item_" + item}
                           resizeMode="contain"
                           source={
-                            item == 'Bluetooth'
+                            item == "Bluetooth"
                               ? images.features.Bluetooth
-                              : item == 'Parking Sensor'
+                              : item == "Parking Sensor"
                               ? images.features.ParkingSensor
-                              : item == 'Air Conditioner'
+                              : item == "Air Conditioner"
                               ? images.features.AirConditioner
-                              : item?.includes('First')
+                              : item?.includes("First")
                               ? images.features.FirstAidKit
-                              : item?.includes('Dash')
+                              : item?.includes("Dash")
                               ? images.features.DashCamera
-                              : item?.includes('Emergency')
+                              : item?.includes("Emergency")
                               ? images.features.EmergencyKit
-                              : item?.includes('GPS')
+                              : item?.includes("GPS")
                               ? images.features?.GPS
-                              : item?.includes('Charging')
+                              : item?.includes("Charging")
                               ? images.features.MobileChargingCable
-                              : item?.includes('Holder')
+                              : item?.includes("Holder")
                               ? images.features.PhoneHolder
-                              : item?.includes('Reverse')
+                              : item?.includes("Reverse")
                               ? images.features.ReverseCamera
-                              : item?.includes('Tissues')
+                              : item?.includes("Tissues")
                               ? images.features.Tissues
-                              : item?.includes('Umbrella')
+                              : item?.includes("Umbrella")
                               ? images.features.Umbrella
-                              : item?.includes('USB')
+                              : item?.includes("USB")
                               ? images.features.USB
-                              : item?.includes('Water')
+                              : item?.includes("Water")
                               ? images.features.WaterBottles
-                              : ''
+                              : ""
                           }
                           style={styles.icon}
                         />
@@ -393,7 +394,7 @@ const CarDetail: React.FC = () => {
           <View
             style={[
               styles.row,
-              { marginTop: heightPercentageToDP(3), justifyContent: 'center' },
+              { marginTop: heightPercentageToDP(3), justifyContent: "center" },
             ]}
           >
             <FastImage
@@ -438,7 +439,7 @@ const CarDetail: React.FC = () => {
               },
               totalPricePerDay: data?.rentPerDay,
             };
-            navigation.navigate('InsurancePackage', detail);
+            navigation.navigate("InsurancePackage", detail);
           }}
         />
       </View>
@@ -448,10 +449,10 @@ const CarDetail: React.FC = () => {
           <Pressable
             onPress={() => {
               setFilterEnabled(false);
-              setSelectedFirst('');
-              setSelectedSecond('');
-              setSelectedFirstTime('7/10/2013 00:00:00');
-              setSelectedSecondTime('7/10/2013 00:00:00');
+              setSelectedFirst("");
+              setSelectedSecond("");
+              setSelectedFirstTime("7/10/2013 00:00:00");
+              setSelectedSecondTime("7/10/2013 00:00:00");
               setFirstSliderValue(0);
               setSecondSliderValue(0);
             }}
@@ -461,14 +462,14 @@ const CarDetail: React.FC = () => {
           <View style={styles.headerRow}>
             <View>
               <Text style={styles.date}>
-                {selectedFirst != ''
-                  ? moment(selectedFirst).format('ddd, DD, MMM')
-                  : 'Select Date'}
+                {selectedFirst != ""
+                  ? moment(selectedFirst).format("ddd, DD, MMM")
+                  : "Select Date"}
               </Text>
               <Text style={styles.time}>
-                {selectedFirstTime != ''
-                  ? moment(selectedFirstTime).format('hh:mm a')
-                  : 'Select Time'}
+                {selectedFirstTime != ""
+                  ? moment(selectedFirstTime).format("hh:mm a")
+                  : "Select Time"}
               </Text>
             </View>
             <View>
@@ -477,14 +478,14 @@ const CarDetail: React.FC = () => {
 
             <View>
               <Text style={styles.date}>
-                {selectedSecond != ''
-                  ? moment(selectedSecond).format('ddd, DD, MMM')
-                  : 'Select Date'}
+                {selectedSecond != ""
+                  ? moment(selectedSecond).format("ddd, DD, MMM")
+                  : "Select Date"}
               </Text>
               <Text style={styles.time}>
-                {selectedSecondTime != ''
-                  ? moment(selectedSecondTime).format('hh:mm a')
-                  : 'Select Time'}
+                {selectedSecondTime != ""
+                  ? moment(selectedSecondTime).format("hh:mm a")
+                  : "Select Time"}
               </Text>
             </View>
           </View>
@@ -501,14 +502,14 @@ const CarDetail: React.FC = () => {
               style={{
                 width: widthPercentageToDP(90),
                 borderRadius: widthPercentageToDP(3),
-                alignSelf: 'center',
+                alignSelf: "center",
               }}
               allowSelectionOutOfRange={false}
               onDayPress={(day) => {
-                if (selectedFirst != '') {
-                  if (selectedSecond != '') {
-                    setSelectedFirst('');
-                    setSelectedSecond('');
+                if (selectedFirst != "") {
+                  if (selectedSecond != "") {
+                    setSelectedFirst("");
+                    setSelectedSecond("");
                   } else {
                     if (moment(day?.dateString).isBefore(selectedFirst)) {
                     } else setSelectedSecond(day.dateString);
@@ -536,21 +537,21 @@ const CarDetail: React.FC = () => {
                 marginTop: heightPercentageToDP(2),
                 width: widthPercentageToDP(90),
                 borderRadius: widthPercentageToDP(3),
-                alignSelf: 'center',
+                alignSelf: "center",
               }}
               allowSelectionOutOfRange={false}
               onDayPress={(day) => {
-                if (selectedFirst != '') {
-                  if (selectedSecond != '') {
-                    setSelectedFirst('');
-                    setSelectedSecond('');
+                if (selectedFirst != "") {
+                  if (selectedSecond != "") {
+                    setSelectedFirst("");
+                    setSelectedSecond("");
                   } else {
                     if (moment(day?.dateString).isBefore(selectedFirst)) {
                     } else setSelectedSecond(day.dateString);
                   }
                 } else setSelectedFirst(day.dateString);
               }}
-              current={moment(new Date()).add(1, 'month').toISOString()}
+              current={moment(new Date()).add(1, "month").toISOString()}
               hideArrows
               markedDates={{
                 [selectedFirst]: {
@@ -573,21 +574,21 @@ const CarDetail: React.FC = () => {
             <Slider
               maximumValue={24}
               minimumValue={0}
-              renderThumbComponent={() => renderThumb('start')}
+              renderThumbComponent={() => renderThumb("start")}
               step={1}
               value={firstSliderValue}
               onValueChange={(val) => {
                 setFirstSliderValue(val);
               }}
               maximumTrackTintColor={theme.colors.primary}
-              minimumTrackTintColor={'grey'}
+              minimumTrackTintColor={"grey"}
               trackStyle={{
                 paddingVertical: heightPercentageToDP(0.4),
                 borderRadius: widthPercentageToDP(2),
               }}
               containerStyle={{
                 width: widthPercentageToDP(70),
-                alignSelf: 'center',
+                alignSelf: "center",
                 borderRadius: widthPercentageToDP(2),
               }}
             />
@@ -599,21 +600,21 @@ const CarDetail: React.FC = () => {
             <Slider
               maximumValue={24}
               minimumValue={0}
-              renderThumbComponent={() => renderThumb('end')}
+              renderThumbComponent={() => renderThumb("end")}
               step={1}
               value={secondSliderValue}
               onValueChange={(val) => {
                 setSecondSliderValue(val);
               }}
               minimumTrackTintColor={theme.colors.primary}
-              maximumTrackTintColor={'grey'}
+              maximumTrackTintColor={"grey"}
               trackStyle={{
                 paddingVertical: heightPercentageToDP(0.4),
                 borderRadius: widthPercentageToDP(2),
               }}
               containerStyle={{
                 width: widthPercentageToDP(70),
-                alignSelf: 'center',
+                alignSelf: "center",
                 borderRadius: widthPercentageToDP(2),
               }}
             />
@@ -626,7 +627,7 @@ const CarDetail: React.FC = () => {
             disabled={!selectedFirst || !selectedSecond}
             style={[
               styles.button,
-              { alignSelf: 'center', marginTop: heightPercentageToDP(2) },
+              { alignSelf: "center", marginTop: heightPercentageToDP(2) },
             ]}
             textStyle={styles.buttonText}
           />
@@ -654,38 +655,38 @@ const CarDetail: React.FC = () => {
               <View style={styles.subFeatureContainer}>
                 {index < 4 ? (
                   <FastImage
-                    key={'item_' + item}
+                    key={"item_" + item}
                     resizeMode="contain"
                     source={
-                      item == 'Bluetooth'
+                      item == "Bluetooth"
                         ? images.features.Bluetooth
-                        : item == 'Parking Sensor'
+                        : item == "Parking Sensor"
                         ? images.features.ParkingSensor
-                        : item == 'Air Conditioner'
+                        : item == "Air Conditioner"
                         ? images.features.AirConditioner
-                        : item?.includes('First')
+                        : item?.includes("First")
                         ? images.features.FirstAidKit
-                        : item?.includes('Dash')
+                        : item?.includes("Dash")
                         ? images.features.DashCamera
-                        : item?.includes('Emergency')
+                        : item?.includes("Emergency")
                         ? images.features.EmergencyKit
-                        : item?.includes('GPS')
+                        : item?.includes("GPS")
                         ? images.features?.GPS
-                        : item?.includes('Charging')
+                        : item?.includes("Charging")
                         ? images.features.MobileChargingCable
-                        : item?.includes('Holder')
+                        : item?.includes("Holder")
                         ? images.features.PhoneHolder
-                        : item?.includes('Reverse')
+                        : item?.includes("Reverse")
                         ? images.features.ReverseCamera
-                        : item?.includes('Tissues')
+                        : item?.includes("Tissues")
                         ? images.features.Tissues
-                        : item?.includes('Umbrella')
+                        : item?.includes("Umbrella")
                         ? images.features.Umbrella
-                        : item?.includes('USB')
+                        : item?.includes("USB")
                         ? images.features.USB
-                        : item?.includes('Water')
+                        : item?.includes("Water")
                         ? images.features.WaterBottles
-                        : ''
+                        : ""
                     }
                     style={styles.icon}
                   />
