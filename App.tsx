@@ -1,14 +1,6 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
+import { NotificationListener, requestUserPermission } from 'app/helpers/PushNotificationHelper';
+import React, { useEffect } from 'react';
 
-import React from 'react';
 
 import {
     SafeAreaView,
@@ -19,6 +11,8 @@ import {
     useColorScheme,
     View,
 } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
+
 
 import {
     Colors,
@@ -27,6 +21,7 @@ import {
     LearnMoreLinks,
     ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Section: React.FC<{
     title: string;
@@ -56,8 +51,38 @@ const Section: React.FC<{
     );
 };
 
+
+
+
 const App = () => {
     const isDarkMode = useColorScheme() === 'dark';
+
+    useEffect(() => {
+        requestUserPermission();
+        NotificationListener();
+        getFCMToken();
+    }, []);
+
+
+    async function getFCMToken(user: any) {
+        try {
+            let fcmtoken = await AsyncStorage.getItem('fcmtoken');
+
+            if (!fcmtoken) {
+                fcmtoken = await messaging().getToken();
+                if (fcmtoken) {
+                    console.log(fcmtoken, '......new token');
+                    await AsyncStorage.setItem('fcmtoken', fcmtoken);
+
+
+                }
+            }
+            return fcmtoken;
+        } catch (error) {
+            console.log(error, 'error in getFCMToken');
+            throw error;
+        }
+    }
 
     const backgroundStyle = {
         backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
