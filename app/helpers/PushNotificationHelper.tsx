@@ -2,7 +2,11 @@ import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export async function requestUserPermission() {
+
     const authStatus = await messaging().requestPermission();
+    await messaging().requestPermission({
+        provisional: true,
+    });
     const enabled =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
@@ -11,6 +15,19 @@ export async function requestUserPermission() {
         console.log('Authorization status:', authStatus);
     }
 }
+
+export async function checkApplicationPermission() {
+    const authorizationStatus = await messaging().requestPermission();
+
+    if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
+        console.log('User has notification permissions enabled.');
+    } else if (authorizationStatus === messaging.AuthorizationStatus.PROVISIONAL) {
+        console.log('User has provisional notification permissions.');
+    } else {
+        console.log('User has notification permissions disabled');
+    }
+}
+
 
 export async function getFCMToken() {
     try {

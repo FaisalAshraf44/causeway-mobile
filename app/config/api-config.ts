@@ -1,7 +1,7 @@
 /* App config for apis
  */
 const ApiConfig = {
-  BASE_URL: 'http://wolverine-dev.com/',
+  BASE_URL: 'http://54.234.221.228',
   LOGIN: '/api/auth/signin',
   HOME: '/api/cars/find-by-filters',
   GET_MESSAGES: '/api/chats/get-chats',

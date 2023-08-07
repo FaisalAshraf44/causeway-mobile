@@ -38,7 +38,7 @@ const HostFeatureAddition: React.FC = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: 'Add a feature',
+      headerTitle: 'Add Features',
       headerStyle: {
         backgroundColor: theme.colors.glossyBlack,
       },
@@ -86,7 +86,7 @@ const HostFeatureAddition: React.FC = () => {
         })
         .finally(() => {
           setIsLoading(false);
-          // navigation.dispatch(StackActions.pop(4));
+          navigation.dispatch(StackActions.pop(4));
           // setTimeout(() => {
           //   navigation.goBack();
           //   dispatch(

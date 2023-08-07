@@ -1,4 +1,4 @@
-import { NotificationListener, requestUserPermission } from 'app/helpers/PushNotificationHelper';
+import { checkApplicationPermission, NotificationListener, requestUserPermission } from 'app/helpers/PushNotificationHelper';
 import React, { useEffect } from 'react';
 
 
@@ -61,6 +61,7 @@ const App = () => {
         requestUserPermission();
         NotificationListener();
         getFCMToken();
+        checkApplicationPermission();
     }, []);
 
 
