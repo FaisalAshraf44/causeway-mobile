@@ -70,8 +70,9 @@ const HostFeatureAddition: React.FC = () => {
     const data: any = { ...route?.params, features: selection };
 
     if (!data?.milage) data.milage = '';
+    setIsLoading(true);
+
     try {
-      setIsLoading(true);
       const filename = Date.now().toString();
 
       storage()
@@ -83,19 +84,22 @@ const HostFeatureAddition: React.FC = () => {
           }
 
           await database().ref(`/hosts/${filename}`).set(data);
+          setIsLoading(false);
+          setShowSuccess(true);
+
         })
         .finally(() => {
           setIsLoading(false);
           navigation.dispatch(StackActions.pop(4));
-          // setTimeout(() => {
-          //   navigation.goBack();
-          //   dispatch(
-          //     enableSnackbar(
-          //       'Thank you for subscribing to our host program. CausewWay team will contact you soon.'
-          //     )
-          //   );
-          // }, 100);
-          setShowSuccess(true);
+          setTimeout(() => {
+            setShowSuccess(false);
+            navigation.goBack();
+            dispatch(
+              enableSnackbar(
+                'Thank you for subscribing to our host program. CausewWay team will contact you soon.'
+              )
+            );
+          }, 3000);
         })
         .catch((err) => {
           console.log('err', err);
@@ -103,6 +107,8 @@ const HostFeatureAddition: React.FC = () => {
     } catch (err) {
       console.log('er', err);
       dispatch(enableSnackbar('Operation failed'));
+      setIsLoading(false);
+
     }
   };
 

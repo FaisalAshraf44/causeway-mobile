@@ -10,6 +10,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import FastImage from 'react-native-fast-image';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTheme } from 'react-native-paper';
+import getCarDetail from 'app/services/getCarDetail';
 
 import NavigationService from 'app/navigation/NavigationService';
 import { isTablet } from 'react-native-device-info';
@@ -131,34 +132,41 @@ const HostDetails: React.FC = () => {
     return false;
   };
 
-  const submit = (data: any) => {
-    if (!makeValue || !makeValue?.id) {
-      dispatch(enableSnackbar('Make is required'));
-      return;
-    }
+  const submit = async (data: any) => {
+    try {
+      if (!makeValue || !makeValue?.id) {
+        dispatch(enableSnackbar('Make is required'));
+        return;
+      }
 
-    if (!yearValue || !yearValue?.id) {
-      dispatch(enableSnackbar('Year is required'));
-      return;
-    }
-    if (image == images.Host.addImage) {
-      dispatch(enableSnackbar('Image is required'));
-      return;
-    }
-    if (!validateEmail(data?.emailAddress)) {
-      dispatch(enableSnackbar('Provide the correct email address'));
-      return;
-    }
+      if (!yearValue || !yearValue?.id) {
+        dispatch(enableSnackbar('Year is required'));
+        return;
+      }
+      if (image == images.Host.addImage) {
+        dispatch(enableSnackbar('Image is required'));
+        return;
+      }
+      if (!validateEmail(data?.emailAddress)) {
+        dispatch(enableSnackbar('Provide the correct email address'));
+        return;
+      }
+      const tempData = { ...data };
+      tempData.make = makeValue?.value;
+      tempData.year = yearValue?.value;
+      tempData.image = image?.uri;
+      Object.assign(tempData)
 
-    const tempData = { ...data };
-    tempData.make = makeValue?.value;
-    tempData.year = yearValue?.value;
-    tempData.image = image?.uri;
-    navigation.navigate('AppStack', {
-      screen: 'HostFeatureAddition',
-      params: tempData,
-    });
+      navigation.navigate('AppStack', {
+        screen: 'HostFeatureAddition',
+        params: tempData,
+      });
+    } catch (error) {
+      console.error('Error sending data to API:', error);
+      dispatch(enableSnackbar('Error sending data to server'));
+    }
   };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: 'Become a host',
@@ -473,7 +481,7 @@ const HostDetails: React.FC = () => {
         style={styles.button}
         onPress={handleSubmit(submit)}
 
-        // }}
+      // }}
       />
     </ScrollView>
   );
