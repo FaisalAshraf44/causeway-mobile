@@ -41,7 +41,7 @@ const HostFeatureAddition: React.FC = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: 'Add a feature',
+      headerTitle: 'Add Features',
       headerStyle: {
         backgroundColor: theme.colors.glossyBlack,
       },

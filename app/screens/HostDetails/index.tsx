@@ -171,7 +171,7 @@ const HostDetails: React.FC = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: 'Become a host',
+      headerTitle: 'Become a Host',
       headerStyle: {
         backgroundColor: theme.colors.glossyBlack,
       },
