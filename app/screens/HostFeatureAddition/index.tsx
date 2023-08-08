@@ -85,7 +85,6 @@ const HostFeatureAddition: React.FC = () => {
 
           await database().ref(`/hosts/${filename}`).set(data);
           setIsLoading(false);
-          setShowSuccess(true);
 
         })
         .finally(() => {
@@ -100,6 +99,8 @@ const HostFeatureAddition: React.FC = () => {
               )
             );
           }, 3000);
+          setShowSuccess(true);
+
         })
         .catch((err) => {
           console.log('err', err);

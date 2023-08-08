@@ -10,8 +10,6 @@ import { Dropdown } from 'react-native-element-dropdown';
 import FastImage from 'react-native-fast-image';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTheme } from 'react-native-paper';
-import getCarDetail from 'app/services/getCarDetail';
-
 import NavigationService from 'app/navigation/NavigationService';
 import { isTablet } from 'react-native-device-info';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -155,7 +153,6 @@ const HostDetails: React.FC = () => {
       tempData.make = makeValue?.value;
       tempData.year = yearValue?.value;
       tempData.image = image?.uri;
-      Object.assign(tempData)
 
       navigation.navigate('AppStack', {
         screen: 'HostFeatureAddition',

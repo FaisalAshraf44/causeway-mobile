@@ -1069,7 +1069,7 @@ PODS:
     - Google-Maps-iOS-Utils (= 4.1.0)
     - GoogleMaps (= 7.4.0)
     - React-Core
-  - react-native-image-picker (5.0.2):
+  - react-native-image-picker (5.6.0):
     - React-Core
   - react-native-maps (1.7.1):
     - React-Core
@@ -1560,7 +1560,7 @@ SPEC CHECKSUMS:
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-geolocation: 0f7fe8a4c2de477e278b0365cce27d089a8c5903
   react-native-google-maps: dd12cdd86b8e3fedbbb671676aedaa2f656e2ccd
-  react-native-image-picker: a5dddebb4d2955ac4712a4ed66b00a85f62a63ac
+  react-native-image-picker: db60857e03d63721f19b6f4027de20429ddd9cba
   react-native-maps: 667f9b975549c6fa9b1631bf859440f68ebd3b8f
   react-native-pager-view: 0ccb8bf60e2ebd38b1f3669fa3650ecce81db2df
   react-native-restart: 45c8dca02491980f2958595333cbccd6877cb57e
