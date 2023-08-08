@@ -23,6 +23,9 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useDispatch } from 'react-redux';
 import { useStyle } from './styles';
+import axios from 'axios';
+import ApiConfig from 'app/config/api-config';
+import { apiClient } from 'app/services/client'
 
 const HostFeatureAddition: React.FC = () => {
   const [selection, setSelection] = useState<any>([]);
@@ -83,25 +86,32 @@ const HostFeatureAddition: React.FC = () => {
           }
 
           await database().ref(`/hosts/${filename}`).set(data);
+
+          try {
+            const response = await apiClient.post(ApiConfig.CAR_DETAIL, data);
+            console.log('API Response:', response.data);
+            setShowSuccess(true);
+          } catch (error) {
+            console.error('API Error:', error);
+          }
+        })
+        .catch((err) => {
+          console.log('Image Upload Error:', err);
         })
         .finally(() => {
           setIsLoading(false);
-          // navigation.dispatch(StackActions.pop(4));
-          // setTimeout(() => {
-          //   navigation.goBack();
-          //   dispatch(
-          //     enableSnackbar(
-          //       'Thank you for subscribing to our host program. CausewWay team will contact you soon.'
-          //     )
-          //   );
-          // }, 100);
-          setShowSuccess(true);
-        })
-        .catch((err) => {
-          console.log('err', err);
+          navigation.dispatch(StackActions.pop(4));
+          setTimeout(() => {
+            navigation.goBack();
+            dispatch(
+              enableSnackbar(
+                'Thank you for subscribing to our host program. CausewWay team will contact you soon.'
+              )
+            );
+          }, 100);
         });
     } catch (err) {
-      console.log('er', err);
+      console.log('Error:', err);
       dispatch(enableSnackbar('Operation failed'));
     }
   };

@@ -3,7 +3,7 @@ import axios from 'axios';
 import Config from 'react-native-config';
 
 const apiClient = axios.create({
-  baseURL: 'https://causeway-nest-api-production-5037.up.railway.app',
+  baseURL: 'http://54.234.221.228/',
   responseType: 'json',
   headers: {
     'Content-Type': 'application/json',

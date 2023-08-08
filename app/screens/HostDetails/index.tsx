@@ -10,6 +10,11 @@ import { Dropdown } from 'react-native-element-dropdown';
 import FastImage from 'react-native-fast-image';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTheme } from 'react-native-paper';
+import getCarDetail from 'app/services/getCarDetail';
+import axios from 'axios';
+import ApiConfig from 'app/config/api-config';
+import { apiClient } from 'app/services/client'
+
 
 import NavigationService from 'app/navigation/NavigationService';
 import { isTablet } from 'react-native-device-info';
@@ -131,7 +136,7 @@ const HostDetails: React.FC = () => {
     return false;
   };
 
-  const submit = (data: any) => {
+  const submit = async (data: any) => {
     if (!makeValue || !makeValue?.id) {
       dispatch(enableSnackbar('Make is required'));
       return;
@@ -154,11 +159,16 @@ const HostDetails: React.FC = () => {
     tempData.make = makeValue?.value;
     tempData.year = yearValue?.value;
     tempData.image = image?.uri;
+
     navigation.navigate('AppStack', {
       screen: 'HostFeatureAddition',
       params: tempData,
     });
-  };
+
+  }
+
+
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: 'Become a host',
@@ -189,6 +199,7 @@ const HostDetails: React.FC = () => {
       },
     });
   }, []);
+
   return (
     <ScrollView
       style={styles.container}
@@ -473,7 +484,7 @@ const HostDetails: React.FC = () => {
         style={styles.button}
         onPress={handleSubmit(submit)}
 
-        // }}
+      // }}
       />
     </ScrollView>
   );
