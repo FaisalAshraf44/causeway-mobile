@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1052354359759",
-    "project_id": "causway-8efd4",
-    "storage_bucket": "causway-8efd4.appspot.com"
+    "project_number": "330677722689",
+    "project_id": "causeway-6ba6d",
+    "storage_bucket": "causeway-6ba6d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1052354359759:android:7b2ca4bbff0dc7bf21a2ba",
+        "mobilesdk_app_id": "1:330677722689:android:52efe2f5db9e8b1ccb70c0",
         "android_client_info": {
           "package_name": "com.tx.causeway"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1052354359759-6tormjtp2kk1ivocb51fm3ua6sl0314b.apps.googleusercontent.com",
+          "client_id": "330677722689-iar4nc0mjd6dc37mkjm7hua0d5nl20ke.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBl800CMbvL_UjZMvCqrupNaZlv01ZtDgQ"
+          "current_key": "AIzaSyBhUQ1toBx7UQMhnGrnUZQRmVJkSepXyhU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1052354359759-6tormjtp2kk1ivocb51fm3ua6sl0314b.apps.googleusercontent.com",
+              "client_id": "330677722689-iar4nc0mjd6dc37mkjm7hua0d5nl20ke.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

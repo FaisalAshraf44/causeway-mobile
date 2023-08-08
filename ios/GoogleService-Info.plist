@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1052354359759-g37ku7nkehh0d5999g0oar7pvc0s4brf.apps.googleusercontent.com</string>
+	<string>330677722689-rctrbttqj1oa0220m7kukq70gqme72pd.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1052354359759-g37ku7nkehh0d5999g0oar7pvc0s4brf</string>
+	<string>com.googleusercontent.apps.330677722689-rctrbttqj1oa0220m7kukq70gqme72pd</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAe2Ilq1Wcu412YQLaf1BPgEL2SRdBrnHQ</string>
+	<string>AIzaSyDWPN38UmU9alP_NAQb3LumNCkDoKwxNDg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1052354359759</string>
+	<string>330677722689</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.tx.causeway</string>
 	<key>PROJECT_ID</key>
-	<string>causway-8efd4</string>
+	<string>causeway-6ba6d</string>
 	<key>STORAGE_BUCKET</key>
-	<string>causway-8efd4.appspot.com</string>
+	<string>causeway-6ba6d.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1052354359759:ios:36f361ddbc55ab7e21a2ba</string>
+	<string>1:330677722689:ios:c0e685270e7c8e31cb70c0</string>
 </dict>
 </plist>

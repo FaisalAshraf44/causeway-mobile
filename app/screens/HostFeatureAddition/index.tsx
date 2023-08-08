@@ -70,51 +70,49 @@ const HostFeatureAddition: React.FC = () => {
     });
   }, []);
   const submit = async () => {
-    const data: any = { ...route?.params, features: selection };
+    setIsLoading(true);
 
-    if (!data?.milage) data.milage = '';
     try {
-      setIsLoading(true);
+      const data: any = { ...route?.params, features: selection };
+      if (!data?.milage) data.milage = '';
+
       const filename = Date.now().toString();
 
-      storage()
+      await storage()
         .ref(filename)
-        .putFile(data?.image)
-        .then(async (ref) => {
-          if (ref?.state == 'success') {
-            data.imageUrl = `https://firebasestorage.googleapis.com/v0/b/causway-8efd4.appspot.com/o/${filename}?alt=media&token=ddc686e5-5769-449f-86e9-3d1dc39835b7`;
-          }
+        .putFile(data?.image);
 
-          await database().ref(`/hosts/${filename}`).set(data);
+      if (ref?.state == 'success') {
+        data.imageUrl = `https://firebasestorage.googleapis.com/v0/b/causway-8efd4.appspot.com/o/${filename}?alt=media&token=ddc686e5-5769-449f-86e9-3d1dc39835b7`;
+      }
 
-          try {
-            const response = await apiClient.post(ApiConfig.CAR_DETAIL, data);
-            console.log('API Response:', response.data);
-            setShowSuccess(true);
-          } catch (error) {
-            console.error('API Error:', error);
-          }
-        })
-        .catch((err) => {
-          console.log('Image Upload Error:', err);
-        })
-        .finally(() => {
-          setIsLoading(false);
-          navigation.dispatch(StackActions.pop(4));
-          setTimeout(() => {
-            navigation.goBack();
-            dispatch(
-              enableSnackbar(
-                'Thank you for subscribing to our host program. CausewWay team will contact you soon.'
-              )
-            );
-          }, 100);
-        });
+      await database().ref(`/hosts/${filename}`).set(data);
+
+      const response = await apiClient.post(ApiConfig.CAR_DETAIL, data);
+      console.log('API Response:', response.data);
+      setShowSuccess(true);
     } catch (err) {
       console.log('Error:', err);
       dispatch(enableSnackbar('Operation failed'));
+    } finally {
+      setIsLoading(false);
+      navigation.dispatch(StackActions.pop(4));
+      setTimeout(() => {
+        navigation.goBack();
+        dispatch(
+          enableSnackbar(
+            'Thank you for subscribing to our host program. CausewWay team will contact you soon.'
+          )
+        );
+      }, 100);
     }
   };
+
+  //   } catch (err) {
+  //     console.log('Error:', err);
+  //     dispatch(enableSnackbar('Operation failed'));
+  //   }
+  // };
 
   const continueToHome = () => {
     navigation.dispatch(StackActions.pop(4));
