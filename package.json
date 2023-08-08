@@ -62,7 +62,7 @@
     "react-native-gesture-handler": "^2.9.0",
     "react-native-gifted-chat": "^2.1.0",
     "react-native-google-places-autocomplete": "^2.5.1",
-    "react-native-image-picker": "^5.4.2",
+    "react-native-image-picker": "5.0.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-maps": "^1.7.1",
     "react-native-otp-textinput": "^1.0.1",
