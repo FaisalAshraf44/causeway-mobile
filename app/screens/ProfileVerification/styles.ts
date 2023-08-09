@@ -108,6 +108,7 @@ export const useStyle = () => {
         paddingVertical: heightPercentageToDP(1.2),
         flexDirection: 'row',
       },
+      
       modalContainer: {
         height:224,
         // width:335,

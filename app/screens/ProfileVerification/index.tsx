@@ -14,9 +14,6 @@ const ProfileVerification: React.FC = () => {
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
-
-
-
   const handleCross = () => {
     navigation.goBack()
   }
@@ -155,8 +152,6 @@ const ProfileVerification: React.FC = () => {
           </View>
         </View>
       </Modal>
-
-
     </View>
   );
 };

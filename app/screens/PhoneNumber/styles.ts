@@ -8,6 +8,7 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import themeSlice from 'app/store/slice/themeSlice';
+import { isTablet } from 'react-native-device-info';
 
 export const useStyle = () => {
   const theme = useTheme();
@@ -102,6 +103,11 @@ export const useStyle = () => {
       addImage: {
         width: widthPercentageToDP(6.5),
         height: heightPercentageToDP(3.4),
+      },
+      error: {
+        color: 'red',
+        paddingVertical: heightPercentageToDP(0.5),
+        fontSize: isTablet() ? widthPercentageToDP(2) : undefined,
       },
     });
   return React.useMemo(() => styles(), [isDark]);
