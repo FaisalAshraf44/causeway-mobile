@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import PrimaryButton from 'app/components/PrimaryButton';
 import images from 'app/config/images';
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Modal, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,9 +10,38 @@ import { useStyle } from './styles';
 const ProfileVerification: React.FC = () => {
   const styles = useStyle();
   const navigation = useNavigation<any>();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+
+
+  const handleCross = () => {
+    navigation.goBack()
+  }
+  const handleVerifyLater = () => {
+    setIsModalVisible(!isModalVisible);
+    navigation.goBack()
+  }
+  const handleVerifyNow = () => {
+    setIsModalVisible(!isModalVisible);
+    navigation.navigate('UploadPhoto')
+  }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <SafeAreaView />
+      <TouchableOpacity
+        onPress={handleCross}
+        activeOpacity={0.7}
+      >
+        <FastImage
+          source={images.ProfileVerification.cross}
+          style={{ height: 28, width: 28, marginTop: 31, marginLeft: 20, }}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
       <View style={styles.subContainer}>
         <Text style={styles.titleText}>Get approved to drive</Text>
         <Text style={styles.titleSubText}>
@@ -87,13 +116,48 @@ const ProfileVerification: React.FC = () => {
           />
           <TouchableOpacity
             style={styles.skipContainer}
-            onPress={() => navigation.goBack()}
+            onPress={toggleModal}
           >
             <Text style={styles.skipText}>Skip Verification</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+      <Modal
+        visible={isModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={toggleModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: 'center' }}>
+              <FastImage
+                source={images.ProfileVerification.caution}
+                style={styles.cardImage}
+                resizeMode="contain"
+              />
+              <Text style={[styles.modalText, { marginLeft: 6 }]}>
+                Profile Verification will be required to proceed the booking.
+              </Text>
+            </View>
+            <Text style={[styles.modalText, { color: '#A7A7A7', fontSize: 11 }]}>
+              Are you sure want to skip and verify later?
+            </Text>
+            <TouchableOpacity onPress={handleVerifyLater} style={styles.modalButton}
+              activeOpacity={0.7}>
+              <Text style={styles.modalButtonText}>I’ll Verify Later</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleVerifyNow} style={{ justifyContent: 'center', alignItems: 'center', marginTop: 25 }}
+              activeOpacity={0.7}
+            >
+              <Text style={{ color: '#A7A7A7' }}>Verify Now</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+
+    </View>
   );
 };
 

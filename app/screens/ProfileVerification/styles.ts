@@ -20,9 +20,10 @@ export const useStyle = () => {
       },
       subContainer: {
         flex: 1,
-        paddingTop: heightPercentageToDP(10),
+        paddingTop: heightPercentageToDP(6),
         paddingHorizontal: widthPercentageToDP(3),
-        alignSelf: 'center',
+        // alignSelf: 'center',
+        
       },
       titleText: {
         fontFamily: theme.fonts.boldFont,
@@ -50,13 +51,14 @@ export const useStyle = () => {
       },
       informativeText: {
         fontFamily: theme.fonts.regularFont,
-        fontSize: widthPercentageToDP(3.5),
+        fontSize: widthPercentageToDP(3),
         color: theme.colors.lightgrey,
       },
       policyText: {
         fontFamily: theme.fonts.regularFont,
         fontSize: widthPercentageToDP(3.5),
         color: '#523FB2',
+        marginLeft:1,
       },
       buttonsContainer: {
         width: '100%',
@@ -105,6 +107,40 @@ export const useStyle = () => {
       rowContainer: {
         paddingVertical: heightPercentageToDP(1.2),
         flexDirection: 'row',
+      },
+      modalContainer: {
+        height:224,
+        // width:335,
+        flex:1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#1B1B1B',
+        borderRadius:13
+      },
+      modalContent: {
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // flex: 1,
+      },
+      modalText: {
+        fontSize: 14,
+       
+        textAlign: 'center',
+        color:'#FFFFFF'
+      },
+      modalButton: {
+        backgroundColor: '#EE2F3F',
+        padding: 10,
+        borderRadius: 5,
+        justifyContent:'center',
+        alignItems:'center',
+        height:42,
+        marginTop:29
+      },
+      modalButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
       },
     });
   return React.useMemo(() => styles(), [isDark]);

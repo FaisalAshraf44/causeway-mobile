@@ -256,6 +256,7 @@ const AppNavigator = () => {
       <Stack.Screen
         name={'ProfileVerification'}
         component={ProfileVerification}
+        options={{ headerShown: false }}
       />
       <Stack.Screen name={'UploadPhoto'} component={UploadPhoto} />
       <Stack.Screen name={'PhoneVerification'} component={PhoneNumber} />
@@ -314,7 +315,7 @@ const App: React.FC = () => {
       {!firstRun ? <DrawerNavigator /> : <OnboardNavigator />}
       <Snackbar
         visible={isVisible}
-        onDismiss={() => {}}
+        onDismiss={() => { }}
         style={{ zIndex: 5000 }}
       >
         {message}

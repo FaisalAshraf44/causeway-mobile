@@ -48,7 +48,7 @@ export const useStyle = () => {
         paddingVertical: heightPercentageToDP(9),
         alignItems: 'center',
         borderRadius: widthPercentageToDP(2.5),
-        marginBottom: heightPercentageToDP(1.5),
+        // marginBottom: heightPercentageToDP(1.5),
       },
       placeholderStyle: {
         fontSize: widthPercentageToDP(4),

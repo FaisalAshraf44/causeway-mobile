@@ -113,29 +113,30 @@ const Profile: React.FC = () => {
                 style={styles.componentStyle}
               />
             ) : null}
-
-            {/* <TouchableOpacity>
+            {user ? (
               <ClickBoxWithIcon
                 icon={images.Profile.setting}
                 title="Account Settings"
                 onPress={() => {
-                  if (user)
-                    navigation.navigate('AppStack', {
-                      screen: 'AccountSetting',
-                    });
-                  else navigation.navigate('LoginStack');
+                  navigation.navigate('AppStack', {
+                    screen: 'AccountSetting',
+                  });
                 }}
                 style={styles.componentStyle}
               />
-            </TouchableOpacity>
-            <TouchableOpacity>
+            ) : null}
+            {user ? (
               <ClickBoxWithIcon
                 icon={images.Profile.questionMark}
                 title="How Causeway Car Rental Work?"
-                onPress={() => {}}
+                onPress={() => {
+                  // navigation.navigate('AppStack', {
+                  //   screen: 'AccountSetting',
+                  // });
+                }}
                 style={styles.componentStyle}
               />
-            </TouchableOpacity> */}
+            ) : null}
           </View>
           <TouchableOpacity style={styles.helpContainer}>
             <FastImage

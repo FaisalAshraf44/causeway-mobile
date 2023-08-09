@@ -128,6 +128,8 @@ const images = {
     profile: require('../assets/ProfileVerification/Profile.png'),
     call: require('../assets/ProfileVerification/call.png'),
     card: require('../assets/ProfileVerification/card.png'),
+    cross: require('../assets/ProfileVerification/cross.png'),
+    caution: require('../assets/ProfileVerification/caution.png')
   },
   PaymentDetails: {
     masterCard: require('../assets/PaymentDetails/masterCard.png'),

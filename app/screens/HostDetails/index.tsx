@@ -357,25 +357,39 @@ const HostDetails: React.FC = () => {
       <View style={styles.controller}>
         <Text style={styles.dropeHeading}>Make</Text>
         <View style={styles.promoContainer}>
-          <Dropdown
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            iconStyle={styles.iconStyle}
-            data={makeData}
-            labelField="label"
-            containerStyle={styles.containerStyle}
-            itemTextStyle={styles.itemTextStyle}
-            activeColor={theme.colors.darkgrey}
-            valueField="value"
-            placeholder="Select Make"
-            value={makeValue?.id}
-            onChange={(item: any) => {
-              setMakeValue({ id: item?.value, value: item.label });
-            }}
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <Dropdown
+                style={styles.dropdown}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                iconStyle={styles.iconStyle}
+                data={makeData}
+                labelField="label"
+                containerStyle={styles.containerStyle}
+                itemTextStyle={styles.itemTextStyle}
+                activeColor={theme.colors.darkgrey}
+                valueField="value"
+                placeholder="Select Make"
+                value={value}
+                onChange={(item: any) => {
+                  setMakeValue({ id: item?.value, value: item.label });
+                  onChange(item?.value);
+                }}
+              />
+            )}
+            name="make"
           />
         </View>
+        {formState.errors.make && (
+          <Text style={[styles.error, { maxWidth: widthPercentageToDP(43), alignSelf: 'flex-end', marginRight: 10 }]}>
+            {t('Make is required')}
+          </Text>
+        )}
       </View>
+
       <View style={styles.controller}>
         <Text style={styles.heading}>Model</Text>
         <Controller
@@ -407,25 +421,39 @@ const HostDetails: React.FC = () => {
       <View style={styles.controller}>
         <Text style={styles.dropeHeading}>Year</Text>
         <View style={styles.promoContainer}>
-          <Dropdown
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            iconStyle={styles.iconStyle}
-            data={yearData}
-            labelField="label"
-            containerStyle={styles.containerStyle}
-            itemTextStyle={styles.itemTextStyle}
-            activeColor={theme.colors.darkgrey}
-            valueField="value"
-            placeholder="Select Year"
-            value={yearValue?.id}
-            onChange={(item: any) => {
-              setYearValue({ id: item?.value, value: item.label });
-            }}
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <Dropdown
+                style={styles.dropdown}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                iconStyle={styles.iconStyle}
+                data={yearData}
+                labelField="label"
+                containerStyle={styles.containerStyle}
+                itemTextStyle={styles.itemTextStyle}
+                activeColor={theme.colors.darkgrey}
+                valueField="value"
+                placeholder="Select Year"
+                value={value}
+                onChange={(item: any) => {
+                  setYearValue({ id: item?.value, value: item.label });
+                  onChange(item?.value);
+                }}
+              />
+            )}
+            name="year"
           />
         </View>
+        {formState.errors.year && (
+          <Text style={[styles.error, { maxWidth: widthPercentageToDP(43), alignSelf: 'flex-end', marginRight: 10 }]}>
+            {t('Model Year is required')}
+          </Text>
+        )}
       </View>
+
       <View style={styles.controller}>
         <Text style={styles.heading}>Mileage (Optional)</Text>
         <Controller
@@ -446,46 +474,54 @@ const HostDetails: React.FC = () => {
       </View>
       <View style={styles.controller}>
         <Text style={styles.heading}>Add Photos</Text>
-        <TouchableOpacity
-          style={styles.addContainer}
-          onPress={async () => {
-            const result = await launchImageLibrary({
-              mediaType: 'photo',
-              selectionLimit: 1,
-            });
+        <Controller
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { onChange, value } }) => (
+            <TouchableOpacity
+              style={styles.addContainer}
+              onPress={async () => {
+                const result = await launchImageLibrary({
+                  mediaType: 'photo',
+                  selectionLimit: 1,
+                });
 
-            if (result?.assets && result?.assets?.length > 0) {
-              setImage({ uri: result?.assets[0]?.uri });
-            }
-          }}
-        >
-          <FastImage
-            source={image}
-            resizeMode="contain"
-            style={{
-              height:
-                image == images.Host.addImage
-                  ? heightPercentageToDP(5)
-                  : heightPercentageToDP(10),
-              width:
-                image == images.Host.addImage
-                  ? widthPercentageToDP(10)
-                  : widthPercentageToDP(20),
-            }}
-          />
-          {image == images.Host.addImage ? (
-            <Text style={styles.imgtext}>Add Image</Text>
-          ) : null}
-        </TouchableOpacity>
-        {/* <Text style={styles.subText}>You can add upto 10 images</Text> */}
+                if (result?.assets && result?.assets?.length > 0) {
+                  onChange({ uri: result?.assets[0]?.uri });
+                }
+              }}
+            >
+              <FastImage
+                source={image}
+                resizeMode="contain"
+                style={{
+                  height:
+                    image == images.Host.addImage
+                      ? heightPercentageToDP(5)
+                      : heightPercentageToDP(10),
+                  width:
+                    image == images.Host.addImage
+                      ? widthPercentageToDP(10)
+                      : widthPercentageToDP(20),
+                }}
+              />
+              {image == images.Host.addImage ? (
+                <Text style={styles.imgtext}>Add Image</Text>
+              ) : null}
+            </TouchableOpacity>
+          )}
+          name="image"
+        />
+        {formState.errors.image && (
+          <Text style={[styles.error, { maxWidth: widthPercentageToDP(43), alignSelf: 'flex-end', marginRight: 10 }]}>{t('Image is required')}</Text>
+        )}
       </View>
       <PrimaryButton
         title="Next"
         style={styles.button}
         onPress={handleSubmit(submit)}
-
-      // }}
       />
+
     </ScrollView>
   );
 };
