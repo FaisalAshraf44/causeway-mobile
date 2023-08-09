@@ -14,11 +14,29 @@ import NavigationService from 'app/navigation/NavigationService';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useForm, Controller } from 'react-hook-form';
 
+
 const PhoneNumber: React.FC = () => {
   const styles = useStyle();
   const navigation = useNavigation<any>();
   const theme = useTheme();
   const goBack = () => NavigationService.goBack();
+  const [dropDownValue, setDropDownValue] = useState<string | null>(null);
+  const [isNumberEntered, setIsNumberEntered] = useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
+  const [mobileNumber, setMobileNumber] = useState<string>('');
+  const [countryCode, setCountryCode] = useState<string>('');
+  const { control, handleSubmit, formState: { errors } } = useForm();
+  const onSubmit = () => {
+    if (!dropDownValue || dropDownValue === '') {
+      setShowError(true); // Show error if country code is not entered
+    } else if (Object.keys(errors).length === 0) {
+      navigation.navigate('LicenseVerification');
+      setShowError(false); // Clear the error state
+    } else {
+      setShowError(true); // Show error if there are validation errors
+    }
+  };
+
 
 
   useLayoutEffect(() => {
@@ -61,16 +79,15 @@ const PhoneNumber: React.FC = () => {
     { label: 'Item 7', value: '7' },
     { label: 'Item 8', value: '8' },
   ];
-  const [dropDownValue, setDropDownValue] = useState<string | null>(null);
-  const [isNumberEntered, setIsNumberEntered] = useState<boolean>(false);
-  const [showError, setShowError] = useState<boolean>(false);
-  const [mobileNumber, setMobileNumber] = useState<string>('');
-  const [countryCode, setCountryCode] = useState<string>('');
-  const { handleSubmit, control, errors } = useForm();
 
 
-  const onSubmit = (data: any) => {
-    navigation.navigate('LicenseVerification');
+  const handleContinue = () => {
+    if (isNumberEntered) {
+      navigation.navigate('LicenseVerification');
+      setShowError(false); // Clear the error state
+    } else {
+      setShowError(true); // Show error if mobile number is not entered
+    }
   };
 
   return (
@@ -84,76 +101,90 @@ const PhoneNumber: React.FC = () => {
         </Text>
         <Controller
           control={control}
-          render={({ field: { onChange, value } }) => (
-            <Dropdown
-              style={styles.dropdown}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              iconStyle={styles.iconStyle}
-              data={data}
-              labelField="label"
-              containerStyle={styles.containerStyle}
-              itemTextStyle={styles.itemTextStyle}
-              activeColor={theme.colors.darkgrey}
-              valueField="value"
-              placeholder="(+60)"
-              value={value}
-              onChange={(selectedValue: string) => onChange(selectedValue)}
-              renderLeftIcon={() => (
-                <View style={styles.rowDirection}>
-                  <FastImage
-                    source={images.UploadPhoto.flag}
-                    resizeMode="contain"
-                    style={styles.addImage}
-                  />
-                  <FastImage
-                    source={images.UploadPhoto.down}
-                    resizeMode="contain"
-                    style={styles.arrowImage}
-                  />
-                </View>
+          rules={{
+            required: 'Country code is required',
+          }}
+          render={({ field }) => (
+            <View>
+              <Dropdown
+                style={styles.dropdown}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                iconStyle={styles.iconStyle}
+                data={data}
+                labelField="label"
+                containerStyle={styles.containerStyle}
+                itemTextStyle={styles.itemTextStyle}
+                activeColor={theme.colors.darkgrey}
+                valueField="value"
+                placeholder="(+60)"
+                value={dropDownValue}
+                onChange={(item: any) => {
+                  setDropDownValue(item.value);
+                  field.onChange(item.value); // Trigger validation for the dropdown
+                }}
+                renderLeftIcon={() => (
+                  <View style={styles.rowDirection}>
+                    <FastImage
+                      source={images.UploadPhoto.flag}
+                      resizeMode="contain"
+                      style={styles.addImage}
+                    />
+                    <FastImage
+                      source={images.UploadPhoto.down}
+                      resizeMode="contain"
+                      style={styles.arrowImage}
+                    />
+                  </View>
+                )}
+                renderRightIcon={() => undefined}
+              />
+              {errors.countryCode && (
+                <Text style={styles.error}>{errors.countryCode.message}</Text>
               )}
-              renderRightIcon={() => undefined}
-            />
+            </View>
           )}
           name="countryCode"
           defaultValue=""
         />
-        {errors.countryCode && (
-          <Text style={styles.error}>Please select a country code</Text>
-        )}
-
         <Controller
           control={control}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={[
-                styles.inputStyle,
-                errors.mobileNumber ? styles.error : undefined,
-              ]}
-              placeholder="Mobile Number"
-              placeholderTextColor={theme.colors.lightgrey}
-              value={value}
-              onChangeText={(text) => {
-                onChange(text);
-              }}
-            />
+          rules={{
+            required: 'Mobile number is required',
+            pattern: {
+              value: /^[0-9]*$/,
+              message: 'Please enter a valid mobile number',
+            },
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <View>
+              <TextInput
+                style={[
+                  styles.inputStyle,
+                  errors.mobileNumber ? styles.error : undefined,
+                ]}
+                placeholder="Mobile Number"
+                placeholderTextColor={theme.colors.lightgrey}
+                value={value}
+                onBlur={onBlur}
+                onChangeText={onChange}
+              />
+              {errors.mobileNumber && (
+                <Text style={styles.error}>{errors.mobileNumber.message}</Text>
+              )}
+            </View>
           )}
           name="mobileNumber"
           defaultValue=""
-          rules={{ required: true }}
         />
-        {errors.mobileNumber && (
-          <Text style={styles.error}>Please enter a valid mobile number</Text>
-        )}
+
         <View style={styles.buttonsContainer}>
           <PrimaryButton
             style={styles.button}
             // disabled={isNumberEntered ? false : true}
             title="Continue"
             textStyle={styles.txtstyle}
-            onPress={handleSubmit(onSubmit)}
-          />
+            onPress={handleSubmit(onSubmit)} />
         </View>
       </View>
     </View>
