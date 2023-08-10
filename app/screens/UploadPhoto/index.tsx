@@ -13,6 +13,8 @@ import { isTablet } from 'react-native-device-info';
 import NavigationService from 'app/navigation/NavigationService';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { useRoute } from '@react-navigation/native';
+
 
 const UploadPhoto: React.FC = () => {
   const styles = useStyle();
@@ -22,6 +24,7 @@ const UploadPhoto: React.FC = () => {
     undefined
   );
   const navigation = useNavigation<any>();
+  const route = useRoute<any>();
   const theme = useTheme();
   const goBack = () => NavigationService.goBack();
 
@@ -59,10 +62,12 @@ const UploadPhoto: React.FC = () => {
 
   const handleContinue = () => {
     if (isPhotoAdded) {
-      navigation.navigate('PhoneVerification');
-      setShowError(false); // Clear the error state
+      navigation.navigate('PhoneVerification', {
+        selectedImageUri: selectedImageUri,
+      });
+      setShowError(false);
     } else {
-      setShowError(true); // Show error if no photo is added
+      setShowError(true);
     }
   };
   return (

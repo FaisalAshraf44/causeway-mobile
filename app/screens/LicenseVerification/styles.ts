@@ -23,13 +23,49 @@ export const useStyle = () => {
       subContainer: {
         flex: 1,
         paddingHorizontal: widthPercentageToDP(4),
-        paddingTop: heightPercentageToDP(4),
+        paddingTop: heightPercentageToDP(1),
       },
-      controller: { marginVertical: heightPercentageToDP(0.7) },
+      controller: { 
+        marginVertical: heightPercentageToDP(0.7) 
+      },
       error: {
         color: 'red',
         paddingVertical: heightPercentageToDP(0.5),
         fontSize: isTablet() ? widthPercentageToDP(2) : undefined,
+      },
+      textView: {
+        paddingHorizontal: widthPercentageToDP(2),
+        zIndex: -1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 0.5,
+        borderRadius: 10,
+        width: widthPercentageToDP(92),
+        height:heightPercentageToDP(7),
+        marginVertical: heightPercentageToDP(0.7),
+        backgroundColor: theme.colors.glossyBlack,
+      },
+      selectedImage: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 10,
+      },
+      textStyles:{ 
+        color: '#727272',
+        marginLeft: 10,
+        fontSize: isTablet() ? widthPercentageToDP(2) : widthPercentageToDP(4),
+        fontFamily: theme.fonts.regularFont 
+        },
+      imageContainer: {
+        width: widthPercentageToDP(92), 
+        height: heightPercentageToDP(40), 
+        padding: 10,
+        borderRadius: 10, 
+        borderWidth: 0.5,
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginRight: 10, 
+        backgroundColor: theme.colors.glossyBlack,
       },
       socialImage: {
         height: heightPercentageToDP(3.5),
@@ -39,7 +75,6 @@ export const useStyle = () => {
         width: '100%',
         alignSelf: 'center',
         alignItems: 'center',
-        position: 'absolute',
         bottom: 0,
         paddingVertical: heightPercentageToDP(3),
       },

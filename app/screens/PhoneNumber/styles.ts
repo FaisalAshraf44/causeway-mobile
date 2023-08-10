@@ -55,6 +55,11 @@ export const useStyle = () => {
         paddingLeft: widthPercentageToDP(3),
         fontFamily: theme.fonts.regularFont,
       },
+      countryCodeText: {
+        fontSize: 16,
+        color: theme.colors.text,
+        marginRight: 10, // Adjust this value to provide spacing between the country code and the input
+      },
       rowDirection: {
         flexDirection: 'row',
         alignItems: 'center',

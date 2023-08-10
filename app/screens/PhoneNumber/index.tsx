@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import PrimaryButton from 'app/components/PrimaryButton';
 import images from 'app/config/images';
 import React, { useLayoutEffect, useState } from 'react';
@@ -14,10 +14,10 @@ import NavigationService from 'app/navigation/NavigationService';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useForm, Controller } from 'react-hook-form';
 
-
 const PhoneNumber: React.FC = () => {
   const styles = useStyle();
   const navigation = useNavigation<any>();
+  const route = useRoute<any>();
   const theme = useTheme();
   const goBack = () => NavigationService.goBack();
   const [dropDownValue, setDropDownValue] = useState<string | null>(null);
@@ -26,18 +26,22 @@ const PhoneNumber: React.FC = () => {
   const [mobileNumber, setMobileNumber] = useState<string>('');
   const [countryCode, setCountryCode] = useState<string>('');
   const { control, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = () => {
+
+  const receivedParams = route.params;
+  const onSubmit = (data) => {
     if (!dropDownValue || dropDownValue === '') {
-      setShowError(true); // Show error if country code is not entered
+      setShowError(true);
     } else if (Object.keys(errors).length === 0) {
-      navigation.navigate('LicenseVerification');
-      setShowError(false); // Clear the error state
+      const fullMobileNumber = `${dropDownValue} ${data.mobileNumber}`;
+      navigation.navigate('LicenseVerification', {
+        ...receivedParams,
+        mobileNumber: fullMobileNumber,
+      });
+      setShowError(false);
     } else {
-      setShowError(true); // Show error if there are validation errors
+      setShowError(true);
     }
   };
-
-
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -70,25 +74,15 @@ const PhoneNumber: React.FC = () => {
     });
   }, []);
   const data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
-    { label: 'Item 4', value: '4' },
-    { label: 'Item 5', value: '5' },
-    { label: 'Item 6', value: '6' },
-    { label: 'Item 7', value: '7' },
-    { label: 'Item 8', value: '8' },
+    { label: '+91', value: '+91' },
+    { label: '+92', value: '+92' },
+    { label: '+93', value: '+93' },
+    { label: '+94', value: '+94' },
+    { label: '+95', value: '+95' },
+    { label: '+96', value: '+96' },
+    { label: '+97', value: '+97' },
+    { label: '+98', value: '+98' },
   ];
-
-
-  const handleContinue = () => {
-    if (isNumberEntered) {
-      navigation.navigate('LicenseVerification');
-      setShowError(false); // Clear the error state
-    } else {
-      setShowError(true); // Show error if mobile number is not entered
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -121,7 +115,8 @@ const PhoneNumber: React.FC = () => {
                 value={dropDownValue}
                 onChange={(item: any) => {
                   setDropDownValue(item.value);
-                  field.onChange(item.value); // Trigger validation for the dropdown
+                  setCountryCode(item.label);
+                  field.onChange(item.value);
                 }}
                 renderLeftIcon={() => (
                   <View style={styles.rowDirection}>
@@ -152,7 +147,7 @@ const PhoneNumber: React.FC = () => {
           rules={{
             required: 'Mobile number is required',
             pattern: {
-              value: /^[0-9]*$/,
+              value: /^\+?[0-9]*$/,
               message: 'Please enter a valid mobile number',
             },
           }}
@@ -163,20 +158,20 @@ const PhoneNumber: React.FC = () => {
                   styles.inputStyle,
                   errors.mobileNumber ? styles.error : undefined,
                 ]}
-                placeholder="Mobile Number"
+                placeholder={`Mobile Number`}
                 placeholderTextColor={theme.colors.lightgrey}
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
               />
-              {errors.mobileNumber && (
-                <Text style={styles.error}>{errors.mobileNumber.message}</Text>
-              )}
             </View>
           )}
           name="mobileNumber"
           defaultValue=""
         />
+        {errors.mobileNumber && (
+          <Text style={styles.error}>{errors.mobileNumber.message}</Text>
+        )}
 
         <View style={styles.buttonsContainer}>
           <PrimaryButton
