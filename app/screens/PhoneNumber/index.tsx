@@ -21,9 +21,7 @@ const PhoneNumber: React.FC = () => {
   const theme = useTheme();
   const goBack = () => NavigationService.goBack();
   const [dropDownValue, setDropDownValue] = useState<string | null>(null);
-  const [isNumberEntered, setIsNumberEntered] = useState<boolean>(false);
   const [showError, setShowError] = useState<boolean>(false);
-  const [mobileNumber, setMobileNumber] = useState<string>('');
   const [countryCode, setCountryCode] = useState<string>('');
   const { control, handleSubmit, formState: { errors } } = useForm();
 

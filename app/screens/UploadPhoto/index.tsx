@@ -14,6 +14,7 @@ import NavigationService from 'app/navigation/NavigationService';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useRoute } from '@react-navigation/native';
+import storage from '@react-native-firebase/storage';
 
 
 const UploadPhoto: React.FC = () => {
@@ -23,6 +24,7 @@ const UploadPhoto: React.FC = () => {
   const [selectedImageUri, setSelectedImageUri] = useState<string | undefined>(
     undefined
   );
+  const [isAdded, setIsAdded] = useState(false)
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const theme = useTheme();
@@ -60,16 +62,26 @@ const UploadPhoto: React.FC = () => {
     });
   }, []);
 
-  const handleContinue = () => {
-    if (isPhotoAdded) {
+  const handleContinue = async () => {
+    try {
+
+      const filename = Date.now().toString();
+      const uploadTask = storage().ref(`profilePictures/${filename}`).putFile(selectedImageUri);
+      await uploadTask;
+
+      const downloadUrl = await storage().ref(`profilePictures/${filename}`).getDownloadURL();
+
       navigation.navigate('PhoneVerification', {
-        selectedImageUri: selectedImageUri,
+        downloadUrl: downloadUrl,
       });
+
       setShowError(false);
-    } else {
+    } catch (error) {
+      console.error('Error uploading image:', error);
       setShowError(true);
     }
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.subContainer}>
@@ -142,7 +154,7 @@ const UploadPhoto: React.FC = () => {
         <View style={styles.buttonsContainer}>
           <PrimaryButton
             style={styles.button}
-            // disabled={isAdded ? false : true}
+
             title="Continue"
             textStyle={styles.txtstyle}
             onPress={handleContinue}

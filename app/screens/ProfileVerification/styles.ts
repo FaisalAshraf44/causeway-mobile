@@ -17,6 +17,8 @@ export const useStyle = () => {
       container: {
         flex: 1,
         backgroundColor: theme.colors.background,
+        // justifyContent:'center',
+        // alignItems:'center'
       },
       subContainer: {
         flex: 1,
@@ -110,8 +112,8 @@ export const useStyle = () => {
       },
       
       modalContainer: {
-        height:224,
-        // width:335,
+        height:heightPercentageToDP(10),
+        width:widthPercentageToDP(10),
         flex:1,
         justifyContent: 'center',
         alignItems: 'center',
