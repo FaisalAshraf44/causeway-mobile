@@ -78,8 +78,12 @@ const LicenseVerification: React.FC = () => {
       };
 
       const params = route.params;
-      const response = await apiClient.post(ApiConfig.USER_INFO, params.mobileNumber, params.downloadUrl, license)
-
+      const response = await apiClient.post(ApiConfig.USER_INFO, {
+        name: data.name,
+        phoneNumber: params.phoneNumber,
+        photo: params.photo,
+        license: license,
+      });
       console.log('API Response:', response.data);
       navigation.navigate('Profile')
       setTimeout(() => {
@@ -88,7 +92,9 @@ const LicenseVerification: React.FC = () => {
       }, 100);
 
     } catch (error) {
-      console.error('Error updating info:', error);
+      // console.error('Error updating info:', error);
+      console.log('API Error Response:', error.response.data);
+
     }
   };
 

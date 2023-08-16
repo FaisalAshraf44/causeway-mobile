@@ -33,7 +33,7 @@ const PhoneNumber: React.FC = () => {
       const fullMobileNumber = `${dropDownValue} ${data.mobileNumber}`;
       navigation.navigate('LicenseVerification', {
         ...receivedParams,
-        mobileNumber: fullMobileNumber,
+        phoneNumber: fullMobileNumber,
       });
       setShowError(false);
     } else {

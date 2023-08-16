@@ -69,10 +69,10 @@ const UploadPhoto: React.FC = () => {
       const uploadTask = storage().ref(`profilePictures/${filename}`).putFile(selectedImageUri);
       await uploadTask;
 
-      const downloadUrl = await storage().ref(`profilePictures/${filename}`).getDownloadURL();
+      const photo = await storage().ref(`profilePictures/${filename}`).getDownloadURL();
 
       navigation.navigate('PhoneVerification', {
-        downloadUrl: downloadUrl,
+        photo: photo,
       });
 
       setShowError(false);
