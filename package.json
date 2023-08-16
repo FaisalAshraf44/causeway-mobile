@@ -18,7 +18,8 @@
     "clean:ios": "rm -rf ios/Pods && rm -rf ios/Podfile.lock",
     "clean": "rm -rf node_modules && rm -rf package-lock.json",
     "android:production-release": "ENVFILE=.env.production react-native run-android --variant=release",
-    "android:staging-release": "ENVFILE=.env.staging  react-native run-android --variant=release"
+    "android:staging-release": "ENVFILE=.env.staging  react-native run-android --variant=release",
+    "postinstall": "react-native setup-ios-permissions && pod-install"
   },
   "dependencies": {
     "@miblanchard/react-native-slider": "^2.3.1",
@@ -105,7 +106,8 @@
     "metro-react-native-babel-preset": "^0.71.0",
     "react-native-codegen": "^0.69.1",
     "react-test-renderer": "18.1.0",
-    "typescript": "^4.7.2"
+    "typescript": "^4.7.2",
+    "pod-install": "0.1.38"
   },
   "resolutions": {
     "@types/react": "^17"
