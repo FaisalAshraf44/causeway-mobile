@@ -21,7 +21,7 @@ const ApiConfig = {
   FORGOT_PASSWORD: '/api/auth/forgot-password',
   VERIFY_OTP: '/api/auth/verify-otp',
   RESET_PASSWORD: '/api/auth/reset-password',
-  USER_INFO: '/api/users/',
+  USER_INFO: '/api/auth/me',
 };
 
 export default ApiConfig;

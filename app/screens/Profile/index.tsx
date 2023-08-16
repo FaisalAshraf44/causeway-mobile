@@ -8,24 +8,18 @@ import {
 } from 'react-native';
 import PrimaryButton from 'app/components/PrimaryButton';
 import { useStyle } from './styles';
-import { useTranslation } from 'react-i18next';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import ClickBoxWithIcon from 'app/components/ClickBoxWithIcon';
 import FastImage from 'react-native-fast-image';
 import images from 'app/config/images';
-import { ActivityIndicator, useTheme } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 import { RootState } from 'app/store/slice';
 import { signOut } from 'app/utils/extras';
-import { use } from 'i18next';
 import { getUserDetails } from 'app/utils/extras';
 const Profile: React.FC = () => {
   const styles = useStyle();
   const isFocused = useIsFocused();
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState({});
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
   const navigation = useNavigation<any>();
   const user = useSelector((state: RootState) => state?.user.user);
   const theme = useTheme();

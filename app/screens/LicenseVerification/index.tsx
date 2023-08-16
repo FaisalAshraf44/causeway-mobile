@@ -17,9 +17,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useDispatch } from 'react-redux';
 import { enableSnackbar } from 'app/store/slice/snackbarSlice';
-import updateInfo from 'app/services/userInfo';
 import storage from '@react-native-firebase/storage';
-import database from '@react-native-firebase/database';
 import { apiClient } from 'app/services/client';
 import ApiConfig from 'app/config/api-config';
 
@@ -78,7 +76,7 @@ const LicenseVerification: React.FC = () => {
       };
 
       const params = route.params;
-      const response = await apiClient.post(ApiConfig.USER_INFO, {
+      const response = await apiClient.patch(ApiConfig.USER_INFO, {
         name: data.name,
         phoneNumber: params.phoneNumber,
         photo: params.photo,
@@ -92,7 +90,6 @@ const LicenseVerification: React.FC = () => {
       }, 100);
 
     } catch (error) {
-      // console.error('Error updating info:', error);
       console.log('API Error Response:', error.response.data);
 
     }
